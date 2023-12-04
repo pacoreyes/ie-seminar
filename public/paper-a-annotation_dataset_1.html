@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta content="width=device-width,initial-scale=1" name="viewport" />
+
+    <link href="styles.css" rel="stylesheet" />
+
+    <title>Annotation procedure of Dataset 1</title>
+  </head>
+
+  <body><header> <a href="index.html"> « IE Seminar</a> </header><section><div
+  class="main-title"><h1>Dataset 1: Annotation
+  procedure</h1><p><strong>Institute of Computer Science, Brandenburgische
+  Technische Universität Cottbus-Senftenberg</strong><br /> Juan-Francisco
+  Reyes<br /> pacoreyes@protonmail.com</p></div><main><section><p
+  style="color: red">### THIS PAGE WILL BE UPDATED PERMANENTLY BASED ON
+  INTERACTIONS ON THE FORUM, RETURN OFTEN</p><h3>Overview</h3><p>This document
+  delineates the process of cleaning, annotating, and anonymizing a dataset
+  for training a text classification model via Hugging Face technology. The
+  objective is to construct a dataset enabling the model to distinctly
+  identify the linguistic structures of two discourse text categories -
+  monologic and dialogic.</p><p>Teams will generate subsets from "Dataset 1,"
+  equally split between interviews and speeches. Utilizing an annotation tool,
+  teams will process texts into datapoints for subsequent BERT model
+  fine-tuning. </p><p>The project is collaborative, with a collective outcome
+  determining the grade.</p><h3>Background</h3> <p>Monologic discourses
+  involve a single speaker, while dialogic discourses entail interactions
+  between two or more participants.</p> <ul>
+      <li><p><strong>Monologic:</strong> The prime example of monologic
+      discourse in this project is a speech.</p></li>
+
+      <li><p><strong>Dialogic:</strong> Conversely, interviews exemplify
+      dialogic discourse.</p></li>
+    </ul> <p>Accurately distinguishing between these text types underpins
+  several computational linguistic endeavors in political discourse analysis,
+  such as speaker attribution in downstream NLP tasks. The correct
+  identification of texts with multiple participants is pivotal.</p>
+  <h3>Task</h3> <p>Teams are to construct a dataset comprising
+  audio/transcribed political discourses, with equal representation of
+  monologic and dialogic examples: 50 speeches and 50 interviews (each
+  involving at least two participants). Dataset 1 aims to set a gold standard
+  for training a deep-learning model to classify these text types. Through
+  manual effort, teams will clean, annotate, and anonymize 300 discourse
+  texts, equally divided into interviews and speeches. Each team member will
+  handle a portion of the texts:</p> <ul>
+      <li>Team member 1: 50 interviews / 50 speeches</li>
+
+      <li>Team member 2: 50 interviews / 50 speeches</li>
+
+      <li>Team member 2: 50 interviews / 50 speeches</li>
+    </ul> <p>In cases with fewer team members, the dataset will be scaled down
+  to 200 or 100 datapoints for teams of two or one, respectively.</p>
+  <h3>Selection criteria</h3> <p>Aligning with the <a
+  href="https://www.researchgate.net/publication/265048097_The_Gold_Standard_in_Corpus_Annotation"
+  target="_blank">gold standard</a> requirements, the selection criteria we
+  follow to add discourse texts to the dataset include:</p> <ul>
+      <li><p><b>Domain</b>: The texts pertain solely to the US political
+      sphere, with American English as the language medium.</p></li>
+
+      <li><p><b>Representativity</b>: Selected texts epitomize their
+      respective genres: speeches and interviews, excluding any with elements
+      that may distort the discourse.</p></li>
+
+      <li><p><b>Interaction</b>: To prevent model misinterpretation of
+      speaker-audience interactions as dialogic elements, texts with excessive
+      interaction are skipped or adjusted to maintain the discourse integrity.
+      For instance, handling speeches by individuals like Donald Trump, known
+      for engaging audiences with rhetorical questions, necessitates
+      caution.</p></li>
+    </ul> <h3>Protocol</h3> <p>The annotation process involves using the
+  annotation tool and a shared <a
+  href="https://docs.google.com/spreadsheets/d/1bUAkwDNu-6weZQqMwpQ8cMnJntcAG_-Ou97DBBpAGHU/edit?usp=sharing"
+  target="_blank">spreadsheet</a> on Google Drive. Initiate the process by
+  providing the lecturer with the Gmail accounts of all team members to secure
+  Editor access to the spreadsheet.</p> <p>Within the spreadsheet, locate the
+  list of document IDs allocated to each seminar team. Navigate to the tabs
+  corresponding to your team number (e.g., "monologic_team_5" for Team 5). As
+  all teams share the spreadsheet, exercise consideration towards your
+  peers.</p> <p>Each tab has six columns: "id," "discourse_type,"
+  "politician," "gender," "url," and "note." Initially, only the "id" and
+  "discourse_type" columns are populated; the remaining columns require
+  completion during the annotation task.</p> <table
+      style="border-collapse: collapse; border: 1px solid black;">
+      <tbody>
+        <tr>
+          <td style="border: 1px solid black;"><p dir="ltr">id</p></td>
+
+          <td style="border: 1px solid black;"><p
+          dir="ltr">discourse_type</p></td>
+
+          <td style="border: 1px solid black;"><p
+          dir="ltr">politician</p></td>
+
+          <td style="border: 1px solid black;"><p dir="ltr">gender</p></td>
+
+          <td style="border: 1px solid black;"><p dir="ltr">url</p></td>
+
+          <td style="border: 1px solid black;"><p dir="ltr">notes</p></td>
+        </tr>
+
+        <tr>
+          <td style="border: 1px solid black;"><p
+          dir="ltr">abcnewsgocomPoliticsweektranscriptob</p></td>
+
+          <td style="border: 1px solid black;"><p dir="ltr">1</p></td>
+
+          <td style="border: 1px solid black;"><br /></td>
+
+          <td style="border: 1px solid black;"><br /></td>
+
+          <td style="border: 1px solid black;"><br /></td>
+
+          <td style="border: 1px solid black;"><br /></td>
+        </tr>
+      </tbody>
+    </table> <ul>
+      <li><p>The "politician" column denotes the name(s) of the discourse
+      speaker(s) (e.g., "Donald Trump").</p></li>
+
+      <li><p>"gender" specifies the politician's gender: "M" or "F."</p></li>
+
+      <li><p>"url" holds the web address of the original document. </p></li>
+
+      <li><p>"notes" (optional) is reserved for any noteworthy annotation
+      observations, such as a skipped document due to a missing URL or
+      irrelevant content.</p></li>
+    </ul> <h4>Step 1: Access the Annotator Tool </h4> <p>Go to the <a
+  href="https://annotation-nlp-rfqv643p3a-lm.a.run.app/"
+  target="_blank">Annotator Tool</a>, logging in with credentials supplied by
+  the lecturer. Select your team from the dropdown menu and launch the tool to
+  begin annotating Dataset 1.</p> <figure><img
+  alt="Annotation Tool, selecting team." src="images/annotation-tool-1.png"
+  width="500" /> <figcaption>Annotation Tool, selecting team. </figcaption>
+  </figure> <h4>Step 2: Document Retrieval</h4> <p>Consider each spreadsheet
+  document as a Dataset 1 datapoint, identified by an ID. Input the
+  document/datapoint ID you intend to annotate.</p> <figure><img
+  alt="Annotation Tool, enter document ID." src="images/annotation-tool-2.png"
+  width="700" /> <figcaption>Annotation Tool, enter document ID. </figcaption>
+  </figure> <p>Upon entry, the editor will launch in a new tab.</p>
+  <figure><img alt="Annotation Tool, editor."
+  src="images/annotation-tool-3.png" width="800" /> <figcaption>Annotation
+  Tool, editor. </figcaption> </figure> <p>Recognize the following areas and
+  elements:</p> <ul>
+      <li><p><b>Editor</b>: The text editing area, accompanied by a word count
+      feature below.</p></li>
+
+      <li><p><b>Sidebar</b>: Houses the document title, text source link,
+      class selector, "Save" button, and "Timestamp remover" tool.</p></li>
+    </ul> <p>The Timestamp remover tool automatically removes the time stamps
+  from transcriptions of some interviews and speeches. For instance: "Donald
+  Trump (00:02):", after applying the remover, results into "Donald Trump:".
+  This tool has different patterns, like "Donald Trump [00:02]:" or "Donald
+  Trump (01:15:02):". </p><h4>Step 3: Verify word count</h4> <p>The minimum
+  number of valid datapoints is 450 words. If the document does not have the
+  minimal number of words, the document must be skipped. The minimal number of
+  words is counted after the removal of surrounding text; after text cleaning
+  and processing. Use the word counter to check the text length.</p> <p>A
+  skipped document does not contribute to the annotated datapoint tally. The
+  annotation goal is 300 datapoints for a trio, 200 for a duo, and 100 for a
+  solo participant. If an excessive number of documents are skipped, and your
+  assigned batch is exhausted, request additional batches from the
+  lecturer.</p> <p>When skipping a document, refrain from saving it; instead,
+  log the reason in the Google spreadsheet.</p><h4>Step 4: Identify and
+  annotate the class</h4> <p>Observe the document and confirm it belongs to
+  one of the two classes. Select the class MONOLOGIC or DIALOGIC. If
+  necessary, refer to the source text to understand the nature of the
+  discourse.</p> <p>Some documents may pose classification challenges. Assess
+  the ease of classifying the document; if it is troublesome, skip it.
+  Occasionally, minor tweaks like omitting brief interactions from another
+  speaker can maintain a document's monologic classification. On the contrary,
+  if a second speaker's involvement is prevalent, consider the document
+  dialogic class or skip or "tweak" it.</p> <p>Recall that we must include
+  perfect examples of each class in the dataset, and it is allowed to make
+  minor editions to make the class features more salient. It is your task to
+  decide the best strategy to create a good example to train our model.</p>
+  <p>Hybrid discourses: sometimes, a speech (monologic discourse) ends with a
+  conference (dialogic discourse). If, after removing one of both segments,
+  the remainder of the text is a good example of the chosen class, removing
+  large parts of the original text is valid. Check the word counter to
+  evaluate the removal of large text segments.</p> <p>By selecting the
+  discourse class, you are annotating the text for the NLP model we will
+  train.</p> <p>IMPORTANT: A document's initial class assignment in the
+  spreadsheet may be erroneous. For instance, a monologic text might be
+  dialogic. If such discrepancies arise, <b>reclassify the document by moving
+  it to the correct tab</b>. Your meticulous classification of each datapoint
+  is pivotal for dataset quality assurance and is a fundamental aspect of this
+  task.</p><h4>Step 5: Remove surrounding text</h4> <p>Surrounding text refers
+  to any content not integral to the primary discourse. The discourse should
+  commence where the main speaker(s) distinctly begin their participation. The
+  onset may include greetings or not, and similarly, it may or may not
+  conclude with farewells. Additionally, surrounding text encompasses
+  introductory remarks by other speakers prior to a speech or interview; such
+  text requires removal. Surrounding text acts as noise and its elimination
+  from the datapoint is essential for a clearer analysis.</p><h4>Step 6:
+  Identify participants or speakers</h4> <p>In monologic discourses such as
+  speeches, only one participant is involved (refer to Step 4).</p>
+  <p>Conversely, dialogic discourses like interviews necessitate a minimum of
+  two and a maximum of four participants. Interviews typically comprise at
+  least one INTERVIEWER and one INTERVIEWED. Inclusions of an additional
+  INTERVIEWED and/or INTERVIEWER are permissible. For example, scenarios with
+  two individuals conducting the interview or being interviewed are
+  acceptable. The configuration of two INTERVIEWERS and two INTERVIEWED
+  represents the maximum participant count for interviews. Given the
+  complexity of participant/speaker variance, extra caution is advised when
+  annotating interviews.</p><h4>Step 7: Anonymize speaker(s)</h4> <p>The task
+  of anonymization applies solely to speakers engaged in the discourse, where
+  their labels (e.g., "DONALD TRUMP:", "DT:", or "Q.") or cross-references are
+  replaced with placeholders. For example, in an interview featuring Donald
+  Trump as a speaker, his name should be anonymized; however, if he is merely
+  mentioned by another participant, no anonymization is required.</p> <p>"<a
+  href="https://en.wikipedia.org/wiki/Named_entity"
+  target="_blank">Named-entities</a>") mentioned in the discourse (e.g.,
+  "White House", "N.A.T.O.", or "Germany") should not be anonymized, since
+  they will be anonymized automatically in a further stage.</p> <p>For this
+  text classification use case, enhancing the saliency of linguistic features
+  for BERT model training is crucial, and the presence of names could mislead
+  the model into classifying texts based on individuals, organizations, or
+  locations. Anonymization strips contextual information, enabling the model
+  to learn from the linguistic structures rather than the contextual
+  content.</p> <p>The deep-learning model recognizes personal pronouns like
+  "I" ("me, "we", "us", "you", "it", "they", "them", etc.) as (self)
+  references, therefore they should not be anonymized.</p> <p>Anonymizing
+  monologic text is simpler compared to dialogic text, as the former typically
+  features a single-speaker label, while the latter contains multiple.</p>
+  <p>Although monologic texts may repetitively display the speaker label,
+  retaining this structure is vital to acquaint the model with this monologic
+  text pattern.</p> <p>In dialogic texts, careful attention to speaker labels
+  and cross-references is essential. See the applied example below for
+  reference. </p> <p>Utilize the "Find and Replace" feature (Ctrl + F) in the
+  editor to expedite this step.</p><h4>Step 8: Remove noisy text</h4> <p>As
+  you must have learned in the Hugging Face's NLP Course, deep learning models
+  learn by "seeing" good examples of the classes we want to predict, therefore
+  removing noise in another important step.</p> <p>Noisy transcribed text are,
+  for instance, applauses, cheers, onomatopoeic expressions, etc., that have
+  been transcribed in the text. Both monologic and dialogic use those
+  patterns, and we must remove them to avoid the model paying attention to
+  them and focus on linguistic structures.</p> <p>Again, the "Find and
+  Replace" feature is also very useful in this step.</p><h4>Step 9: Save the
+  datapoint</h4> <p>Use the "Save" button to save the datapoint.</p><h4>Step
+  10: Log the Google Spreadsheet</h4> <p>For example, view this <a
+  href="https://www.presidency.ucsb.edu/documents/press-briefing-deputy-national-security-advisor-for-international-economic-affairs-mike"
+  target="_blank">interview</a> to notice the removal of irrelevant, noisy, or
+  contextual information at the outset, enhancing the clarity of dialogic
+  discourse for the NLP model.</p> <ul>
+      <li><p>Adopt a unique color for annotating, maintaining consistency
+      throughout to facilitate authorship tracking of each datapoint.</p></li>
+
+      <li><p>Avoid altering the assigned color. The color scheme has been
+      selected for readability.</p></li>
+
+      <li><p>Review the applied example tab to understand how datapoints
+      should be grouped by authors based on the designated colors, and
+      consider this before submission.</p></li>
+
+      <li><p>Ensure politicians' names are written consistently and are easily
+      identifiable, for example, "Donald Trump" instead of "D. Trump." Note
+      that some dialogic texts may feature multiple politicians.</p></li>
+
+      <li><p>Place all skipped datapoints beneath the annotated texts by the
+      respective annotator (team member) to clearly indicate who skipped a
+      text and the rationale behind the omission.</p></li>
+
+      <li>Leave unused datapoints at the end of your logged documents.</li>
+    </ul> <table>
+      <tbody>
+        <tr>
+          <td style="border: 1px solid black;"><p dir="ltr">id</p></td>
+
+          <td style="border: 1px solid black;"><p
+          dir="ltr">discourse_type</p></td>
+
+          <td style="border: 1px solid black;"><p
+          dir="ltr">politician</p></td>
+
+          <td style="border: 1px solid black;"><p dir="ltr">gender</p></td>
+
+          <td style="border: 1px solid black;"><p dir="ltr">url</p></td>
+
+          <td style="border: 1px solid black;"><p dir="ltr">notes</p></td>
+        </tr>
+
+        <tr>
+          <td style="border: 1px solid black;"><p
+          dir="ltr">abcnewsgocomPoliticsweektranscriptob</p></td>
+
+          <td style="border: 1px solid black;"><p dir="ltr">1</p></td>
+
+          <td style="border: 1px solid black;"><p dir="ltr">John Doe</p></td>
+
+          <td style="border: 1px solid black;"><p dir="ltr">M</p></td>
+
+          <td style="border: 1px solid black;"><p dir="ltr">http://…</p></td>
+
+          <td style="border: 1px solid black;"><p dir="ltr">Not
+          rrelevant</p></td>
+        </tr>
+
+        <tr>
+          <td style="border: 1px solid black;"><p
+          dir="ltr">abcnewsgocomPoliticsweektranscrierter</p></td>
+
+          <td style="border: 1px solid black;"><p dir="ltr">1</p></td>
+
+          <td style="border: 1px solid black;"><p dir="ltr">John Doe, Jane
+          Doe</p></td>
+
+          <td style="border: 1px solid black;"><p dir="ltr">M, F</p></td>
+
+          <td style="border: 1px solid black;"><p dir="ltr">http://…</p></td>
+
+          <td style="border: 1px solid black;"><br /></td>
+        </tr>
+      </tbody>
+    </table> <h3>Demo: annotating dialogic discourse (video)</h3> <p>View the
+  <a href="videos/demo_annotation_dialogic.mp4" target="_blank">video</a> for
+  guidance on annotating dialogic text. Note that the video doesn't
+  demonstrate the removal of applause, cheers, or speaker-audience
+  interactions; however, these can be eliminated using the "Find and Replace"
+  feature (Ctrl + F).</p> <h3>Applied example</h3> <p>Open the provided <a
+  href="https://www.presidency.ucsb.edu/documents/press-briefing-deputy-national-security-advisor-for-international-economic-affairs-mike"
+  target="_blank">interview</a> and notice the omission of irrelevant, noisy,
+  and contextual information at the outset, enhancing the clarity of dialogic
+  discourse for the NLP model. The interview commences post "With that, we're
+  open to questions," indicating the transition to dialogic discourse. Note
+  the labeling of the interviewer initially as "Q.," later anonymized to
+  [INTERVIEWER]. Additionally, observe the anonymization of "MR. FROMAN" and
+  "MR. STERN" to [INTERVIEWED1] and [INTERVIEWED2], respectively.</p>
+  <p>Original text:</p> <p><kbd>"<code>Q:</code> On trade, <code>Mike</code>,
+  would you say this promise to restart Doha in 2010, is that a reflection of
+  the economic and political realities of the global crisis? Is that something
+  that the President -- President Obama supports, or was there any effort by
+  anyone to try to see if it could get on track earlier than that?"</kbd></p>
+  <p>...</p> <p><kbd><code>Q:</code> Thanks. <code>Mike</code> or
+  <code>Todd</code>, could you give us some color about the President's role
+  at the MEF meeting today -- whether he -- where he (inaudible), what actual
+  effect he had on the final result? And I'll repeat a question that I asked
+  at the earlier briefing, which was, the President had said he wants the
+  United States to show leadership on climate change. Did he achieve that
+  (inaudible)?</kbd></p> <p><kbd><code>MR. FROMAN</code>: I think he certainly
+  achieved that. I think that there's wide recognition and wide appreciation,
+  actually, of the role of the United States and the change that the President
+  has brought in U.S. policy on this issue, which has been more dramatic
+  perhaps than in any other area.</kbd></p> <p>Anonymized text:</p>
+  <p><kbd>"<code>[INTERVIEWER]</code>: On trade, <code>[INTERVIEWED1]</code>,
+  would you say this promise to restart Doha in 2010, is that a reflection of
+  the economic and political realities of the global crisis? Is that something
+  that the President -- President Obama supports, or was there any effort by
+  anyone to try to see if it could get on track earlier than
+  that?"</kbd></p>... <p><kbd><code>[INTERVIEWER]</code>: Thanks.
+  <code>[INTERVIEWED1]</code> or <code>[INTERVIEWED2]</code>, could you give
+  us some color about the President's role at the MEF meeting today -- whether
+  he -- where he (inaudible), what actual effect he had on the final result?
+  And I'll repeat a question that I asked at the earlier briefing, which was,
+  the President had said he wants the United States to show leadership on
+  climate change. Did he achieve that (inaudible)?</kbd></p>
+  <p><kbd><code>[INTERVIEWED1]</code>: I think he certainly achieved that. I
+  think that there's wide recognition and wide appreciation, actually, of the
+  role of the United States and the change that the President has brought in
+  U.S. policy on this issue, which has been more dramatic perhaps than in any
+  other area.</kbd></p> <h3>Tips</h3> <ol>
+      <li><p>Recall the GIGO principle: <a
+      href="https://en.wikipedia.org/wiki/Garbage_in,_garbage_out"
+      target="_blank">Garbage in, garbage out</a>.</p></li>
+
+      <li><p>Give quality to your work from the beginning, and don't expect to
+      correct your early mistakes in a later stage without double time and
+      effort.</p></li>
+
+      <li><p>Recall that once you train your model with your dataset, the
+      returning metrics will grade your work. Again, "garbage in, garbage
+      out".</p></li>
+
+      <li><p>Don't expect good metrics from a model trained with a low-quality
+      dataset. :(</p></li>
+
+      <li><p>Concerned about fine-tuning a BERT model with merely 100
+      datapoints?</p> <p>If you have this (valid) question in mind, the answer
+      has two parts:</p> <ul>
+          <li><p>BERT models can only be fed by datapoints with a max number
+          of 512 tokens. At this point, from the Hugging Face's NLP course,
+          you should know what a "token" is.</p></li>
+
+          <li><p>The sliding-window technique, in a very simplified way,
+          allows us to split large texts into multiple datapoints.</p></li>
+        </ul> <p>This <a
+      href="https://medium.com/@priyatoshanand/handle-long-text-corpus-for-bert-model-3c85248214aa"
+      target="_blank">article</a> explains the issue.</p> <p>Hence,
+      exclusively opting for shorter texts during annotation is discouraged as
+      it diminishes your model's datapoint count, adversely affecting
+      performance. </p> <p>There's no necessity to solely target larger texts
+      either – simply adhere to the document ID sequence supplied. Text
+      assignments to teams are randomized, so by following the designated
+      order and concentrating on data-wrangling quality, a balanced approach
+      is achieved.</p></li>
+    </ol> <h3>Peer review, Inter-Annotator Agreement (IAA)</h3> <p>The
+  objective is to ensure a high degree of agreement among annotators in
+  classifying (into "MONOLOGIC" and "DIALOGIC"), cleaning and anonymizing
+  political discourses. This IAA assessment will aim to verify the consistency
+  and reliability of the annotations, which is crucial for the subsequent
+  analysis involving the BERT model.</p> <p>Each discourse text will be
+  annotated by at least two different annotators to ensure redundancy. The
+  second annotator –the reviewer– will annotate the agreement assessment based
+  on the following six features:</p> <ol>
+      <li>class: if the class is correct.</li>
+
+      <li>clean timestamps: if timestamps are not present.</li>
+
+      <li>clean surround: if the surrounding text was removed correctly.</li>
+
+      <li>clean noise: if applause, cheers, and other interactions with the
+      public were removed.</li>
+
+      <li>speaker anonymization: if anonymization of speakers is correct.</li>
+
+      <li>cross-reference anonymization: if cross-reference anonymization of
+      speakers is correct.</li>
+    </ol> <p>Add a cross, "x", whenever a discrepancy is found. Leave the cell
+  in blank if no discrepancy was found. <b>Make the correction on the
+  datapoint, and save it</b>.</p> <p>Follow the structure of the Google
+  Spreadsheet <a
+  href="https://docs.google.com/spreadsheets/d/1fzzLMnsN0-EYZ6gC6L5jz0aa8Yzuv_tKMyAuhyE7WyM/edit?usp=sharing">IEFWR
+  2023/24 - Dataset 1 (IAA)</a>. Copy the document and share it with the
+  lecturer (pacoreyesp@gmail.com) when it is complete after following the
+  IAA.</p> <p>If a discrepancy is found, it should be discussed and resolved
+  with the lecturer. Conduct review meetings with annotators to discuss
+  disagreements and clarify any ambiguities in the guidelines, helping to
+  improve the annotation quality moving forward.</p> <p>The curator will
+  review and finalize the annotations, establishing a gold-standard
+  corpus.</p> <p>Recall that each participant must deliver 100 valid
+  datapoints divided into two classes, 50 per class.</p></section> </main>
+  </section> <footer> <p>---</p> <p><small>This documentation was developed by
+  Juan-Francisco Reyes for the seminar on Information Extraction from Web
+  Resources at the Brandenburgische Technische Universität Cottbus-Senftenberg
+  in the Winter semester of 2023/24.</small></p> <small>© 2024 Juan-Francisco
+  Reyes</small> </footer></body>
+</html>

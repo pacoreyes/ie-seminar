@@ -1,0 +1,184 @@
+html {
+  font-size: 1.4em;
+  margin: 3em 0;
+}
+
+p {
+  line-height: 1.2; /* Modify this value as needed */
+}
+
+h3 {
+  font-size: 24px;
+  margin: 5px 0;
+}
+
+h3.abstract-title {
+  font-size: 32px;
+  margin: 5px 0;
+}
+
+h1.role-book-title {
+  /*margin: 0;
+  color: red;*/
+  display: none;
+}
+
+h1.role-chapter-title, h1.role-toc-title, h1.role-appendices-title {
+  font-size: 32px;
+  margin: 40px 0 5px 0;
+}
+
+h1.role-appendices-title {
+  margin-bottom: 30px;
+}
+
+h1.role-toc-title {
+  margin-bottom: 25px;
+}
+
+h2, h1.role-appendix-title {
+  font-size: 28px;
+  margin: 5px 0;
+}
+
+/* Cover and anbstract */
+
+div.cover {
+  text-align: center;
+  margin-bottom: 4em;
+}
+
+div.cover h1 {
+  font-size: 43px;
+  line-height: 48px;
+  margin: 1em 0;
+  padding-bottom: 0;
+  border-bottom-style: none;
+}
+
+div.cover h3 {
+  font-size: 21px;
+}
+
+div.cover h2 {
+  font-size: 28px;
+}
+
+div.abstract h3, div.abstract h4, .cover h3 {
+  margin: 5px 0;
+}
+div.abstract h3 {
+  margin: 3px 0;
+  font-size: 26px
+}
+
+div.abstract p {
+  margin: 3px 0;
+}
+
+div.abstract {
+  text-align: center;
+  /*margin-bottom: 4em;*/
+}
+div.abstract h1 {
+  text-align: center;
+  font-size: 38px;
+  line-height: 42px;
+  margin: 0.5em 0;
+  padding-bottom: 0;
+  border-bottom-style: none;
+}
+
+section#abstract h2 {
+  display: none;
+
+}
+
+div.cover h4 {
+  margin: 5px 0;
+}
+
+div.figure-parts-horizontal {
+  display: flex;
+  align-items: center;
+}
+
+div.figure-parts-horizontal div:nth-child(2) {
+  margin: 0 1em;
+}
+
+body {
+  /*display: flex;*/
+  display: block;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 836px; /* Adjust this value to your desired static width */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2.5em;
+  font-family: sans-serif;
+  font-size: 20px;
+}
+
+table caption {
+  text-align: left;
+  margin: 35px 0 30px 0;
+  font-style: italic;
+}
+
+table tr:first-child {
+  border-top: 1px solid black;
+}
+
+table tr:last-child {
+  border-bottom: 1px solid black;
+}
+
+th, td {
+  padding: 6px 10px;
+  border: none;
+}
+
+th {
+  font-weight: normal;
+}
+
+figcaption {
+  font-size: smaller;
+}
+
+/*@media (max-width: 960px) {
+  body {
+    max-width: none;
+  }
+}*/
+
+li p {
+  margin: 10px 0;
+}
+
+ul.role-booklist-entries li {
+  margin: 15px 0;
+  list-style-type: none;
+}
+
+ul.role-booklist-entries {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+ul.role-booklist-entries ul {
+  padding-left: 30px;
+}
+
+pre {
+        background-color: #161625;
+    color: #9d9d9d;
+    padding: 1em;
+    overflow-x: auto;
+    font-family: monospace;
+    font-size: 0.9em;
+}

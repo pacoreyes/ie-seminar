@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta content="width=device-width,initial-scale=1" name="viewport" />
+
+    <link href="styles.css" rel="stylesheet" />
+
+    <title>IE Seminar - Fine-tuning a BERT model</title>
+  </head>
+
+  <body><header> <a href="index.html"> « IE Seminar</a> </header><section><div
+  class="main-title"><h1>BERT Model 1: Fine-tuning deep-learning model for
+  binary text classification</h1><p><strong>Institute of Computer Science,
+  Brandenburgische Technische Universität Cottbus-Senftenberg</strong><br />
+  Juan-Francisco Reyes<br />
+  pacoreyes@protonmail.com</p></div><main><section><p style="color: red">###
+  THIS PAGE WILL BE UPDATED PERMANENTLY BASED ON INTERACTIONS ON THE FORUM,
+  RETURN OFTEN</p><h3>Overview</h3><p>This document delineates the process of
+  preprocessing Dataset 1 and fine-tuning a BERT model for binary text
+  classification.</p><h3>Files and folders structure</h3><p>This is the list
+  of required files provided:</p><ul>
+      <li><p><kbd>requirements.txt</kbd>: Install Python libraries and
+      dependencies.</p></li>
+
+      <li><p><kbd>preprocess_dataset.py</kbd>: Main text preprocessing script
+      using spaCy.</p></li>
+
+      <li><p><kbd>text_utils.py</kbd>: helpers and utilities for the main
+      preprocessing script.</p></li>
+
+      <li><p><kbd>utils.py</kbd>: general helpers and utilities.</p></li>
+
+      <li><p><kbd>visualizations.py</kbd>: functions to create
+      visualizations.</p></li>
+
+      <li><p><kbd>build_sliced_dataset1.py</kbd>: sliding window
+      script.</p></li>
+
+      <li><p><kbd>text_classification_dl_bert_train.py</kbd>: main BERT
+      training script.</p></li>
+
+      <li><p><kbd>/shared_data/</kbd>: folder for different versions of the
+      dataset.</p></li>
+
+      <li><p><kbd>/shared_data/demo_dataset_1.jsonl</kbd>: Demo version of
+      Dataset 1 for testing purposes. Use it to compare the performance of
+      your model with another dataset.</p></li>
+
+      <li><p><kbd>/shared_images/</kbd>: folder for visualizations
+      output.</p></li>
+    </ul><h3>Before you proceed</h3><p>IMPORTANT NOTE about updates on your
+  dataset.</p><ol>
+      <li><p><span style="color:red">UPDATE THE COOKIE</span>: From this
+      point, all team members need to update the cookie on the web application
+      (<strong>Annotation Tool</strong>) to download or make changes to your
+      dataset. <strong>This action needs to be done only one time</strong>:
+      using the team selector, choose another team, and then select your team
+      again – this action will update the cookie. From then, the cookie in the
+      web application will know what your team is for further actions. <span
+      style="color:red">If you don't do this, updates on your dataset using
+      the Annotator Tool will be recorded wrongly.</span></p></li>
+
+      <li><p>Your subset of Dataset 1 resides on the cloud for security
+      reasons. You can update it and download it every time you need
+      it.</p></li>
+
+      <li><p>Your dataset can be downloaded from the <strong>Annotation
+      Tool</strong> using the "<kbd>Download Dataset 1</kbd>" button.</p></li>
+
+      <li><p>Every update in the dataset should be done through the
+      <strong>Annotation Tool</strong> but <span
+      style="color:red">NEVER</span> in the <kbd>JSONL</kbd> file. Your grade
+      comes from the dataset located in the <strong>Annotation
+      Tool</strong>.</p></li>
+
+      <li><p><strong>I need to recover a datapoint</strong>: If your dataset
+      lacks a datapoint you previously annotated, go to the <strong>Annotation
+      Tool</strong>, load the datapoint, and save it again. Next time you
+      download your dataset, the missing datapoint will be included.</p></li>
+
+      <li><p><strong>I need to remove a datapoint</strong>: if your dataset
+      has unnecessary datapoints you MUST remove them by the
+      <strong>Annotation Tool</strong>. Load the datapoint and select
+      "<kbd>---</kbd>" in the class selector. When you click on the "<kbd>Save
+      datapoint</kbd>" button, a message will be prompted "<kbd
+      style="color: green">ALERT: the class is empty. If you click on 'OK',
+      the datapoint will be excluded from your dataset or not be included in
+      your dataset. Do you want to proceed?</kbd>". Next time you download
+      your dataset, the missing datapoint won't be included. If you need a
+      massive removal of datapoints, contact the lecturer providing a list of
+      datapoint IDs.</p></li>
+
+      <li><p>Make all changes on your dataset using the <strong>Annotation
+      Tool</strong> until the dataset contains what you need to fine-tune your
+      BERT model.</p></li>
+    </ol><h3>Procedure</h3><ol>
+      <li><p>Install dependencies listed in
+      <kbd>requirements.txt</kbd>.</p></li>
+
+      <li><p>The initial version of your dataset is
+      <kbd>dataset_1_raw.jsonl</kbd>. This file needs to be preprocessed and
+      anonymized using the script <kbd>preprocess_dataset.py</kbd>. A new
+      version of your dataset will be generated with the name
+      <kbd>dataset_1.jsonl</kbd>.</p></li>
+
+      <li><p>Apply the <a
+      href="https://medium.com/@priyatoshanand/handle-long-text-corpus-for-bert-model-3c85248214aa"
+      target="_blank">sliding window approach</a> to the dataset using the
+      script <kbd>build_sliced_dataset1.py</kbd>. The new version of your
+      dataset will be generated with the name
+      <kbd>dataset_1_sliced.jsonl</kbd>.</p></li>
+
+      <li><p>Use the script <kbd>text_classification_dl_bert_train.py</kbd> to
+      train the BERT model.</p></li>
+
+      <li><p>Modify hyperparameters if necessary to achieve the highest
+      accuracy.</p></li>
+
+      <li><p>Use the visualizations to evaluate the performance of your model.
+      The <a
+      href="https://www.evidentlyai.com/classification-metrics/confusion-matrix"
+      target="_blank">confusion matrix</a>
+      (<kbd>shared_images/dataset1_model_confusion_matrix.png</kbd>) to track
+      False and True Positives and Negatives. The training and validation
+      losses visualization (<kbd>shared_images/bert_model_losses.png</kbd>) to
+      follow up if your model is overfitting or underfitting [<a
+      href="https://medium.com/nlplanet/bert-finetuning-with-hugging-face-and-training-visualizations-with-tensorboard-46368a57fc97"
+      target="_blank">link1</a>] [<a
+      href="https://towardsdatascience.com/handling-overfitting-in-deep-learning-models-c760ee047c6e"
+      target="_blank">link2</a>].</p></li>
+
+      <li><p>Depending on the environment where you train the model, you may
+      want to save the model; if not, remove the segments of the code that
+      refer to that.</p></li>
+
+      <li><p>Depending on the environment where you train the model, you may
+      want to use <a href="https://mlflow.org/" target="_blank">MLFlow</a> to
+      track the results of your experiments; if not, remove the segments of
+      the code that refer to that.</p></li>
+
+      <li><p>An <a
+      href="https://wandb.ai/ayush-thakur/huggingface/reports/Examples-of-Early-Stopping-in-HuggingFace-Transformers--Vmlldzo0MzE2MTM"
+      target="_blank">early stopping</a> functionality is partially
+      implemented in the code; complete the segments of the code (uncomment)
+      if necessary.</p></li>
+    </ol> <p>This is an oversimplified guide on how to interpret the training
+  and validation losses visualization: </p> <ul>
+      <li><p><strong>Underfitting</strong>: If both training and validation
+      losses are high, or they decrease very slowly over epochs, it’s an
+      indicator of underfitting. The model is not complex enough to capture
+      the underlying trend of the data. Both curves may remain high and close
+      to each other.</p></li>
+
+      <li><p><strong>Overfitting</strong>: If the training loss continues to
+      decrease with epochs but the validation loss starts increasing after a
+      certain point, it’s an indicator of overfitting. The model learns to
+      memorize the training data but performs poorly on unseen data. There
+      will be a noticeable gap between the training and validation loss
+      curves, with the training loss much lower than the validation
+      loss.</p></li>
+
+      <li><p><strong>Good Fit</strong>: If both training and validation losses
+      decrease and stabilize to a point, with a small gap between them, it’s
+      an indicator of a good fit. The model has learned to generalize well
+      from the training data to unseen data.</p></li>
+    </ul> <h3>Submission of Project 1's Results</h3> <p>Submit the following
+  items included in a single zip file:</p> <ol>
+      <li><p><kbd>text_classification_dl_bert_train.py</kbd> file.</p></li>
+
+      <li><p><kbd>dataset1_model_confusion_matrix.png</kbd> file.</p></li>
+
+      <li><kbd>bert_model_losses.png</kbd> file.</li>
+
+      <li><p><kbd>metrics.txt</kbd> file with all metrics
+      information.</p></li>
+    </ol> </section> </main> </section> <footer> <p>---</p> <p><small>This
+  documentation was developed by Juan-Francisco Reyes for the seminar on
+  Information Extraction from Web Resources at the Brandenburgische Technische
+  Universität Cottbus-Senftenberg in the Winter semester of
+  2023/24.</small></p> <small>© 2024 Juan-Francisco Reyes</small>
+  </footer></body>
+</html>

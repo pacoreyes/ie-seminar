@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta content="width=device-width,initial-scale=1" name="viewport" />
+
+    <link href="styles.css" rel="stylesheet" />
+
+    <title>Annotation procedure of Dataset 2</title>
+  </head>
+
+  <body><header> <a href="index.html"> « IE Seminar</a> </header><section><div
+  class="main-title"><h1>Dataset 2: Annotation
+  procedure</h1><p><strong>Institute of Computer Science, Brandenburgische
+  Technische Universität Cottbus-Senftenberg</strong><br /> Juan-Francisco
+  Reyes<br /> pacoreyes@protonmail.com</p></div><main><section><p
+  style="color: red">### THIS PAGE WILL BE UPDATED PERMANENTLY BASED ON
+  INTERACTIONS ON THE FORUM, RETURN OFTEN</p><h3>Overview</h3><p>This document
+  delineates the process of annotating a dataset for training a passage
+  boundary detection model via Hugging Face technology. The objective is to
+  construct a dataset enabling the model to identify the boundaries of a
+  passage about a topic distinctly.</p><p>Teams will generate subsets of
+  "Dataset 2". Utilizing an annotation tool, teams will edit passages that
+  will be turned into datapoints for a subsequent task of BERT model
+  fine-tuning.</p><p>The project is collaborative, with a collective outcome
+  determining the grade; however, the annotation process is
+  individualized.</p><h3>Background</h3><h4>Passage Boundary
+  Detection</h4><p>Task in NLP where the goal is to identify the boundaries
+  between distinct passages or sections within a text. It involves determining
+  where one passage ends and another begins, essential for tasks like document
+  summarization, text segmentation, and improving readability by structuring
+  text into coherent units.</p><p>This process is crucial for understanding
+  and organizing large text volumes by breaking them into more manageable and
+  contextually distinct sections.</p><h4>Next Sentence Prediction (NSP) in
+  BERT Models</h4><p>BERT models were trained with two tasks that enable the
+  development of a sophisticated understanding of language context and
+  sentence relationships: Masked Language Model (MLM) and Next Sentence
+  Prediction (NSP).</p><p>Traditional language models before BERT primarily
+  processed text in one direction (either left-to-right or right-to-left),
+  BERT, however, reads text bi-directionally. This feature means it gains a
+  deeper understanding of the context of a word based on all its surrounding
+  text, not just what comes before it. This feature enables BERT to predict
+  very accurately if two sentences have logical continuation by discerning
+  whether a given sentence logically and coherently follows a preceding
+  sentence in a text.</p><p>This feature can be leveraged to determine the
+  boundaries of a passage. In the NSP task, BERT is given two sentences (A and
+  B) and has to predict if B logically follows A. This capability is essential
+  for understanding sentence relationships, which is a crucial aspect of
+  language comprehension.</p><p>During training, 50% of the time, sentence B
+  is the actual next sentence that follows A, and 50% of the time, it's a
+  random sentence from the corpus. BERT then learns to predict whether these
+  two sentences are related or not.</p><p>NSP helps BERT understand the
+  narrative flow and how ideas are connected in text, which is useful in tasks
+  that require understanding the relationship between sentences, like passage
+  boundary detection, question answering, and summarization.</p><h4>Levels of
+  Language</h4><p>The levels of language that allow us to understand the
+  linguistics of sentence continuity are four:</p><ol>
+      <li><p><strong>Morphology</strong> deals with the structure and
+      formation of words, studying how morphemes (the smallest grammatical
+      units in a language) are combined to form words.</p><p>Example: The word
+      "<kbd>exobiology</kbd>" is formed by combining the prefix
+      "<kbd>exo-</kbd>" (meaning 'outside' or 'external') with
+      "<kbd>biology</kbd>" (the study of living organisms). This morphological
+      combination reflects the study of life beyond Earth, focusing on the
+      possibility of extraterrestrial life.</p></li>
+
+      <li><p><strong>Syntax</strong> is concerned with how words are arranged
+      to form sentences, including the rules and principles that govern
+      sentence structure.</p><p>Example: Consider the sentence, "<kbd>Quantum
+      computers, unlike traditional computers, leverage qubits for
+      computations.</kbd>" This sentence demonstrates syntactic structure,
+      where the introductory phrase "<kbd>unlike traditional computers</kbd>"
+      is inserted to modify and contrast "<kbd>Quantum computers,</kbd>"
+      followed by the main clause "<kbd>leverage qubits for
+      computations.</kbd>"</p></li>
+
+      <li><p><strong>Semantics</strong> involves the meaning of words,
+      phrases, and sentences, including the study of how meaning is conveyed
+      through language, the relationships between words that represent
+      entities, and their relations between them.</p><p>Example: In the
+      sentence, "<kbd>The blockchain securely records all cryptocurrency
+      transactions</kbd>," the semantics involves understanding that
+      "<kbd>blockchain</kbd>" refers to a digital ledger technology, while
+      "<kbd>cryptocurrency transactions</kbd>" implies the exchange or
+      transfer of digital currency assets. The relationship between these
+      terms conveys a specific meaning about the security and nature of
+      digital transactions.</p></li>
+
+      <li><p><strong>Pragmatics</strong> studies how language is used in
+      context and how context affects language interpretation. Pragmatics aims
+      to understand the speaker's intentionality and the effect of context on
+      meaning.</p><p>Example: Imagine a conversation where one person says,
+      "<kbd>It’s getting very warm in here</kbd>", and the other opens a
+      window. While the first sentence could be a simple statement about
+      temperature, it's understood as a request to cool down the room in this
+      context.</p></li>
+    </ol><h4>Cohesion</h4><p>Grammatical and lexical links within a text or
+  speech that hold it together and give it meaning. Cohesion is achieved
+  through various means, such as pronoun reference, conjunctions, lexical
+  ties, and ellipsis.</p><p>Example: "<kbd>Humans have always been fascinated
+  by space. They have dreamt of exploring the stars for centuries. This dream
+  has led to significant advancements in technology.</kbd>"</p><p>In this
+  example, cohesion is achieved through the pronoun "<kbd>They,</kbd>" which
+  refers back to "<kbd>Humans.</kbd>" The lexical tie is the space exploration
+  theme maintained throughout the sentences. The cohesive flow is further
+  supported by the progression from a general fascination to specific
+  advancements.</p><h4>Coherence</h4><p>Logical connections and the overall
+  sense of understandability in a text. A text is coherent if its content is
+  organized in a way that makes sense to the reader or listener, with ideas
+  and arguments flowing logically.</p><p>Example: "<kbd>Sustainable fashion
+  aims to reduce the environmental impact of the clothing industry. To achieve
+  this, designers use eco-friendly materials. Furthermore, they adopt ethical
+  labor practices. As a result, the environmental footprint of clothing
+  production is significantly reduced.</kbd>"</p><p>The coherence in this
+  example is established by presenting a clear, logical sequence of ideas: the
+  goal of sustainable fashion, the methods employed (using eco-friendly
+  materials and ethical labor practices), and the outcome (reduced
+  environmental footprint).</p><h4>Transition Markers</h4><p>Words or phrases
+  that help to link sentences and paragraphs together, such as
+  "<kbd>however</kbd>", "<kbd>furthermore</kbd>", or "<kbd>in
+  conclusion</kbd>", are important for maintaining sentence
+  continuity.</p><p>Example: "<kbd>Solar power is a key component of renewable
+  energy. However, it faces challenges like storage and variability. Despite
+  these challenges, advancements in battery technology are making solar more
+  reliable. Furthermore, government incentives are encouraging its adoption.
+  In conclusion, solar power, while not without its hurdles, is a promising
+  part of the future energy mix.</kbd>"</p><p>In this passage, transitional
+  devices such as "<kbd>However</kbd>," "<kbd>Despite these challenges</kbd>,"
+  "<kbd>Furthermore</kbd>," and "<kbd>In conclusion</kbd>" are used to link
+  sentences and paragraphs. These devices help to contrast points, add
+  additional information, and provide a summarizing statement, contributing to
+  the text's overall flow and continuity.</p><p>Examples of transition markers
+  include:</p><ol>
+      <li><p><strong>Additive Transitions</strong>: Indicate addition or
+      introduction of information. Examples include "<kbd>and</kbd>,"
+      "<kbd>also</kbd>," "<kbd>furthermore</kbd>," "<kbd>in addition</kbd>,"
+      "<kbd>moreover</kbd>."</p></li>
+
+      <li><p><strong>Adversative Transitions</strong>: Signal contrast or
+      contradiction. Examples are "<kbd>but</kbd>," "<kbd>however</kbd>,"
+      "<kbd>on the other hand</kbd>," "<kbd>nevertheless</kbd>,"
+      "<kbd>yet</kbd>."</p></li>
+
+      <li><p><strong>Causal Transitions</strong>: Denote cause-effect
+      relationships. Examples include "<kbd>because</kbd>,"
+      "<kbd>therefore</kbd>," "<kbd>as a result</kbd>," "<kbd>thus</kbd>,"
+      "<kbd>consequently</kbd>."</p></li>
+
+      <li><p><strong>Temporal Transitions</strong>: Indicate time or sequence.
+      Examples are "<kbd>then</kbd>," "<kbd>later</kbd>," "<kbd>after</kbd>,"
+      "<kbd>subsequently</kbd>," "<kbd>meanwhile</kbd>."</p></li>
+
+      <li><p><strong>Exemplification Transitions</strong>: Used for giving
+      examples. Examples include "<kbd>for instance</kbd>," "<kbd>for
+      example</kbd>," "<kbd>namely,</kbd>" "<kbd>specifically</kbd>."</p></li>
+
+      <li><p><strong>Summarization Transitions</strong>: Used to summarize or
+      conclude. Examples are "<kbd>in conclusion</kbd>," "<kbd>to sum
+      up</kbd>," "<kbd>in summary</kbd>," "<kbd>overall</kbd>."</p></li>
+    </ol><h4>Coreference</h4><p>It occurs when two or more expressions in a
+  text refer to the same person or thing (pronoun reference). Coreference
+  plays an essential role in cohesion.</p><ol>
+      <li><p><strong>Anaphora</strong>: a word or phrase that refers back to
+      another word or phrase used earlier in the text. The earlier word or
+      phrase is called the antecedent.</p><p>Example: "<kbd>In quantum
+      computing, <strong>the qubit</strong> is fundamental. <strong>This
+      concept</strong> revolutionizes how we think about processing
+      information.</kbd>" Using "<kbd>this concept</kbd>" helps to link the
+      sentence back to the specific idea of a qubit in quantum
+      computing.</p></li>
+
+      <li><p><strong>Cataphora</strong>: a word or phrase that refers forward
+      to another word or phrase that appears later in the text.</p><p>Example:
+      "Before <strong>his discovery</strong>, Einstein was relatively unknown.
+      <strong>The theory of relativity</strong> changed that." In this case,
+      "<kbd>His discovery</kbd>" is a cataphoric reference that refers forward
+      to "<kbd>The theory of relativity</kbd>," which appears later in the
+      sentence. It introduces the subject of Einstein's significant
+      achievement before specifying what it is.</p></li>
+
+      <li><p><strong>Exophora</strong>: a word or phrase that refers to
+      something outside the text. Unlike anaphora and cataphora, which refer
+      to elements within the text (intra-textual), exophora is extra-textual.
+      It relies on the listener's or reader's knowledge of the context. For
+      example, pronouns like "this" or "that" in a conversation might refer to
+      objects or situations in the immediate physical environment or shared
+      situational context. When someone says, "We have to meet early
+      tomorrow", there is implicit shared understanding between the speaker
+      and the listener or reader – "we" is understood in the context of the
+      conversation. For instance, "In God we trust" shows the use of "we" that
+      doesn't need to be resolved.</p><p>Common exophoric references are "we",
+      "that", "this", "now", "then", "here", "where", "you".</p></li>
+    </ol><p>Coreference happens on the pragmatics level of language, going
+  beyond the literal meaning of words (semantics), morphology and syntax,
+  requiring an understanding of context, speaker intention, and the ability to
+  make inferences.</p><h3>Bootstrapping Approach</h3><p>In NLP, bootstrapping
+  is a semi-supervised learning method that iteratively improves a model's
+  performance by using its predictions to generate new training data. This
+  approach is often used when there is a limited amount of labeled data but an
+  abundance of unlabeled data. In this project, we will follow the
+  bootstrapping approach by automatically creating the first version of the
+  dataset by using rules based on linguistic features. This initial version
+  will define the baseline of our BERT model for NSP.</p><p>The six rules are
+  built on the following linguistic features:</p><ol>
+      <li><p><strong>Coreference Resolution</strong>: Using spaCy's
+      experimental model for coreference resolution
+      (<kbd>en_coreference_web_trf</kbd>) we identify if two sentences have
+      coreference links, meaning if there are words (like pronouns) in one
+      sentence that refer to words in another sentence. It is crucial for
+      understanding the continuity and flow of ideas between
+      sentences.</p></li>
+
+      <li><p><strong>Semantic Chain Detection</strong>: Using spaCy's
+      linguistic features, we evaluate if two sentences are semantically
+      related or discuss the same topic. It uses spaCy's semantic similarity
+      metrics and linguistic features like lemmatization and dependency
+      parsing to identify common referents and subjects, ensuring textual
+      coherence across sentences.</p></li>
+
+      <li><p><strong>Parallelism</strong>: Using spaCy's linguistic features,
+      we evaluate if two sentences follow a similar syntactic structure. It
+      compares the dependency structures of sentences to see if they align,
+      which helps determine if the sentences are part of the same cohesive
+      passage.</p></li>
+
+      <li><p><strong>Transition Marker</strong>: Using spaCy's linguistic
+      features, we evaluate one-sentence transition markers or phrases in a
+      sentence, like "however", "furthermore", or "in conclusion" that are key
+      indicators of the sentence's relation to surrounding text, showing
+      continuity or shifts in the discourse.</p></li>
+
+      <li><p><strong>Logical continuity (from BERT's NSP)</strong>: Using
+      pre-trained BERT models feature Next Sentence Prediction (NSP), we
+      determine if a sentence is a logical continuation of another. It
+      provides insight into whether two sentences should be part of the same
+      passage based on the flow and context of the conversation. The code to
+      explore NSP was posted on the Moodle's forum.</p></li>
+
+      <li><p><strong>Tense and Aspect Change</strong>: Using spaCy's
+      linguistic features, we evaluate if the verbs in two sentences change in
+      tense and aspect. Consistency in tense and aspect between sentences can
+      indicate cohesive narrative flow, thereby helping define passage
+      boundaries. While "tense" refers to when an action happens (past,
+      present, or future), "aspect" refers to the state of the action
+      (completed, ongoing, or recurring).</p></li>
+    </ol><h3>Dataset Building Workflow (Round 1)</h3><ol>
+      <li><p>We begin with a selection of political issues of interest
+      (topics), i.e., climate change, employment, women, etc. The system
+      searches for political issues in thousands of political discourse
+      texts.</p></li>
+
+      <li><p>When a political issue is string-matched in a sentence (root
+      sentence), the six rules are used to navigate precedent and subsequent
+      sentences, evaluating when the topic ends (topic shift).</p></li>
+
+      <li><p>When the leading and training boundaries are defined, the
+      surrounding sentences outside of the passage are added to define the
+      boundaries. Extracted passages are loaded into the Annotation
+      Tool.</p></li>
+
+      <li>Extracted passages are loaded into the Annotation Tool.</li>
+    </ol><h3>Annotation Task (Round 2)</h3><p>Teams will refine the dataset by
+  annotating 250 valid passages per team member extracted from
+  audio/transcribed political discourses. Dataset 2 aims to set a gold
+  standard for fine-tuning the BERT's NSP feature in the domain of American
+  political discourse.</p><p style="color: red">IMPORTANT: The goal is to
+  collect relevant passages of political discourses, speaking about political
+  issues, with well-defined boundaries to fine-tune a BERT's NSP feature in a
+  specific domain (American political discourse).</p><p>Each passage will
+  allow us to generate multiple pairs of sentences to fine-tune the NSP
+  feature of a BERT model comprised of the combination of</p><ul>
+      <li><p>two sentences defining a topic shift, and</p></li>
+
+      <li><p>two sentences defining the continuation of a topic.</p></li>
+    </ul><p>Consequently, a good theoretical understanding of the the
+  linguistics of sentence continuity is crucial.</p><h3>Protocol</h3><p>The
+  annotation process involves using the annotation tool and a shared <a
+  href="https://docs.google.com/spreadsheets/d/1h_rr6c9ifJZF8h7v2CNaRKWUUWfHWue2AjyvgOIUKFA/edit?usp=sharing"
+  target="_blank">spreadsheet</a> on Google Drive. Initiate the process by
+  providing the lecturer with the Gmail accounts of all team members to secure
+  Editor access to the spreadsheet.</p><p>Within the spreadsheet, locate your
+  tab named with your last name. Find in the tab "participants" who will
+  review the dataset of who dataset. As all teams share the spreadsheet,
+  exercise consideration towards your peers.</p><p>Each tab has two columns:
+  "id", and "notes".</p><table
+      style="border-collapse: collapse; border: 1px solid black;">
+      <tbody>
+        <tr>
+          <td style="border: 1px solid black;"><p dir="ltr">id</p></td>
+
+          <td style="border: 1px solid black;"><p dir="ltr">notes</p></td>
+        </tr>
+
+        <tr>
+          <td style="border: 1px solid black;"><p
+          dir="ltr">0000000336</p></td>
+
+          <td style="border: 1px solid black;"><p dir="ltr">Post on the forum
+          to ask for feedback</p></td>
+        </tr>
+      </tbody>
+    </table><ul>
+      <li><p>The "id" column is used to add the ID of each passage you
+      annotate.</p></li>
+
+      <li><p>"notes" (optional) is reserved for any noteworthy annotation
+      observations.</p></li>
+    </ul><p><span style="color:red">IMPORTANT</span>: only log valid
+  datapoints, neither rejected not ignored. Therefore, the spreadsheet will
+  contain only the IDs of valid datapoints.</p><h4>Step 1: Access the
+  Annotation Tool</h4><p>Go to the <a
+  href="https://annotation-nlp-rfqv643p3a-lm.a.run.app/"
+  target="_blank">Annotation Tool</a>, and log in with credentials supplied by
+  the lecturer. Select your last name from the dropdown menu and launch the
+  tool to annotate Dataset 2.</p><h4>Step 2: Recognize Passage
+  Editor</h4><p>Upon entry, the editor will be shown.</p><figure><img
+  alt="Annotation Tool, editor." src="images/annotation-tool-4.png"
+  width="750" /> <figcaption>Annotation Tool,
+  editor.</figcaption></figure><p>Recognize the following areas and
+  elements:</p><ul>
+      <li><p><b>Editor</b>: The text editing area, where the passage range is
+      shown.</p></li>
+
+      <li><p><b>Sidebar</b>: Houses the document ID, text source link, the
+      "shorten" and "extend" buttons, and the "action" buttons.</p></li>
+    </ul><p>Recognize the components of a passage:</p><ul>
+      <li><p><strong>Outside (O)</strong> sentences: are not part of the
+      passage.</p></li>
+
+      <li><p><strong>Root (R)</strong> sentence: where the main topic is
+      mentioned.</p></li>
+
+      <li><p><strong>Inside (I)</strong> sentence: others that complete the
+      passage.</p></li>
+    </ul><figure><img alt="Annotation Tool, editor."
+  src="images/annotation_tool_dataset2_passage.png" width="750" />
+  <figcaption>Elements of a valid passage.</figcaption></figure><p>A valid
+  passage must include at least one sentence and two additional "outside"
+  sentences, giving three sentences. In total, a passage could range from
+  three to eight sentences, including "outside" sentences, consisting of one
+  to six internal sentences plus two external sentences.</p><p>IMPORTANT: It
+  is possible that after analyzing the passage, its main topic is not the
+  matched political issue but another different one. That is not a problem;
+  adjust the boundaries if necessary, and the passage could be accepted as
+  valid.</p><p>The sidebar will show the following elements:</p><ul>
+      <li><p><strong>Passage ID</strong>: the unique ID of the passage
+      document.</p></li>
+
+      <li><p><strong>Source text</strong>: the web page where the text was
+      taken.</p></li>
+
+      <li><p><strong>Issue</strong>: the political issue found by the string
+      matcher.</p></li>
+
+      <li><p><strong>Wikidata entity</strong>: a link to the Wikidata entity
+      that maps the political issue (i.e., <a
+      href="https://www.wikidata.org/wiki/Q31207" target="_blank">health
+      care</a>).</p></li>
+
+      <li><p><strong>Shorten/extend buttons</strong>: the buttons to shorten
+      or extend the passage.</p></li>
+
+      <li><p><strong>Action buttons</strong>: handles the actions to process
+      each passage:</p><ul>
+          <li><p><strong>Accept</strong>: records the passage in the database
+          as valid.</p> <img alt="Accept button."
+          src="images/action_button_accept.png" width="50" /></li>
+
+          <li><p><strong>Reject</strong>: records the passage in the database
+          as invalid. Other annotators won't ever find the same passage.</p>
+          <img alt="Reject button." src="images/action_button_reject.png"
+          width="50" /></li>
+
+          <li><p><strong>Ignore</strong>: skip the passage. Other annotators
+          may find the same passage later.</p> <img alt="Reject button."
+          src="images/action_button_ignore.png" width="50" /></li>
+
+          <li><p><strong>Undo</strong>: the passage is reverted to its
+          original state (reset), removing any annotated information.</p> <img
+          alt="Reject button." src="images/action_button_undo.png"
+          width="50" /></li>
+        </ul></li>
+    </ul><h4>Step 3: Identify political issue</h4><p>Legend:</p><ol>
+      <li><p><span style="color: yellow; background: #161625"> Yellow </span>:
+      outside passage.</p></li>
+
+      <li><p><span style="color: white; background: #161625"> White </span>:
+      inside passage</p></li>
+
+      <li><p><span style="color: #9d9d9d; background: #161625"> Gray </span>:
+      surrounding text.</p></li>
+
+      <li><p><span style="color: orange; background: #161625"> Orange </span>:
+      matched political issue.</p></li>
+    </ol><p>You will recognize the "root" sentence because it has the
+  political issue in orange color. The first step is to disambiguate the
+  political issue that the passage refers to. Each political issue has many
+  aliases. For instance, the political issue "mass media", has the alias
+  "media", and it could be found in another context. For example:</p><pre
+  style="color: white">A very heated exchange there between Kellyanne Conway and a reporter.
+
+That reporter joining me now.
+
+He is Andrew Feinberg, a White House reporter for Breakfast <span
+        style="color: orange">Media</span>.
+
+Andrew, you say that, by asking about your ethnicity, which she did very clear there 
+at the beginning of that clip, that Kellyanne Conway confirms what the president meant.
+
+Explain that.</pre><p>"Breakfast media" is a television program, and,
+  therefore, it is not a valid reference to a political issue of interest. If
+  the matched political issue is not a valid reference to a political issue,
+  the passage must be rejected. On the other hand, the passage is cohesive and
+  coherent but it is NOT part of a political discourse; therefore, the passage
+  is not valid and must be rejected.</p><h4>Step 4: Identify noisy
+  text</h4><p>The combination of algorithms described above will add good
+  examples of passages in the Annotation Tool. However, the source may contain
+  noisy text that confuses the algorithms. The first visual inspection should
+  help to save effort to identify valid passages. For instance, the
+  passage:</p><pre><span style="color: yellow">MARQUARDT:</span>
+
+<span style="color: white">A very heated exchange there between Kellyanne Conway and a reporter.
+
+That reporter joining me now.
+
+He is Andrew Feinberg, a White House reporter for Breakfast <span
+          style="color: orange">Media</span>.
+
+Andrew, you say that, by asking about your ethnicity, which she did very clear there at 
+the beginning of that clip, that Kellyanne Conway confirms what the president meant.
+
+Explain that.</span>
+
+<span style="color: yellow">ANDREW FEINBERG, WHITE HOUSE REPORTER, BREAKFAST MEDIA:</span></pre><p>Both
+  "outside" sentences are speaker labels from an interview, which makes the
+  passage invalid and must be rejected. Recall that after a "Reject" action,
+  any other annotator won't see that passage again.</p><h4>Step 5: Define
+  Passage Boundaries</h4><p>Pay attention to this example of a valid
+  passage:</p><pre style="color: white"><span style="color: #9d9d9d">NOBILO:</span>
+
+<span style="color: yellow">Climate change may be changing the planet, but it's also changing our politics.</span>
+
+We've seen people around the world push for leaders to translate their intentions and words 
+into action.
+
+And now, the <span style="color: orange">U.N.</span> is taking action.
+
+This weekend, Gabon became the first African country to get funding to preserve its rainforests.
+
+<span style="color: yellow">Norway will pay $150 million to battle deforestation there.</span>
+
+<span style="color: #9d9d9d">The move comes as millions of people are taking to the streets.</span></pre><p>Open
+  the <a
+  href="https://www.codecademy.com/article/running-javascript-in-the-browser-console"
+  target="_blank">JS console</a> in your browser and find the continuation
+  links between sentences corresponding to the six (6) linguistic features
+  described before.</p><figure><img alt="Annotator tool with JS console open."
+  src="images/annotator_tool_dataset2_with_console.png" width="750" />
+  <figcaption>Annotator tool with JS console
+  open.</figcaption></figure><figure><img
+  alt="Annotator tool with JS console open."
+  src="images/annotator_tool_dataset2_js_console.png" width="400" />
+  <figcaption>JS console with information about the six (6) linguistic
+  features that define sentence continuity between each pair of sentences.
+  </figcaption></figure><ol>
+      <li><p>Notice that the passage seems to speak about the matched
+      political issue of the <em>United Nations</em> ("<em>U.N.</em>"). Let's
+      review each pair of sentences and analyze which linguistic features link
+      them.</p></li>
+
+      <li><p>In the first pair of sentences, the first ("outside") sentence
+      speaks about <em>climate change</em>. However, the second sentence
+      ("inside") introduces the subject of people pushing leaders
+      (governments) to take action in their favor. See the JS console and
+      observe the "outside" sentence (in yellow letters) that define the
+      passage boundaries.</p><p>Notice that the only found continuity link is
+      <em>logical continuity</em> (see NSP above), but that is not enough
+      since most of the "outside" and "inside" sentences have <em>logical
+      continuity</em>. In the algorithm's logic, <em>logical continuity</em>
+      must always accompany another <em>continuity link</em> to link between
+      sentences.</p><p>We accept the unresolved coreference "<em>we</em>"
+      since it is an exophora. Exophoric references must be evaluated by
+      understanding the context of the passage. If the missing (exophoric)
+      reference does not affect the understanding of the text, we can accept
+      the boundary of the passage containing it.</p><pre><span
+            style="color: yellow">Climate change may be changing the planet, but it's also changing our politics.</span>
+
+<span style="color: white">We've seen people around the world push for leaders to translate their intentions and words 
+into action.</span></pre></li>
+
+      <li><p>In the next pair of sentences, the continuity link between both
+      are: 1) the semantic chain defined by "<em>action</em>", and 2) the
+      transition marker "<em>and</em>". We can confirm that by seeing in the
+      JS console "<em>true</em>" in "<em>semantic chain</em>" and
+      "<em>transition markers</em>".</p><p>The following is the list of nouns
+      evaluated by the algorithm to evaluate semantic chain:</p><ul>
+          <li><p>Sentence 1: "<em>people</em>", "<em>world</em>",
+          "<em>leader</em>", "<em>intention</em>", and
+          "<em>action</em>".</p></li>
+
+          <li><p>Sentence 2: "<em>U.N.</em>" and "<em>action</em>".</p></li>
+        </ul><p>This information is not visible in the annotation tool, but
+      the annotator should evaluate if the semantic chain is creating a valid
+      continuity link between two sentences by reviewing the
+      nouns.</p><p>Notice that nouns have been converted to their lemma (see
+      <a href="https://spacy.io/usage/linguistic-features#lemmatization"
+      target="_blank">lemmatization</a>).</p><pre><span style="color: white">We've seen people around the world push for leaders to translate their intentions and words
+into action.
+
+And now, the U.N. is taking action.</span></pre></li>
+
+      <li><p>The continuity link between the next pair of sentences is
+      "semantic chain". Although the explainability is low here, both
+      sentences make sense since the second sentence is the consequence of the
+      previous sentence and add cohesion and coherence to the passage, and
+      therefore we keep it.</p><pre><span style="color: white">And now, the U.N. is taking action.
+
+This weekend, Gabon became the first African country to get funding to preserve its rainforests.</span></pre></li>
+
+      <li><p>Finally, the algorithm didn't find any continuity link in the
+      next pair of sentences, defining an "outside" sentence and,
+      consequently, the boundary of the passage.</p><pre><span
+            style="color: white">This weekend, Gabon became the first African country to get funding to preserve its rainforests.
+
+<span style="color: yellow">Norway will pay $150 million to battle deforestation there.</span></span></pre></li>
+    </ol><p>Overall, the passage suggests that the United Nations, in response
+  to this global push, is starting to take concrete steps or measures. This
+  implies a shift from planning or discussing to executing real-world actions,
+  providing a specific instance of the U.N.'s action.</p><p>This example shows
+  how annotators can rely on the information the algorithm gives when there
+  are topic shifts or continuity. However, the algorithm could perform better;
+  therefore the annotator evaluates if any sentence must be removed or
+  included in the passage by a clear understanding of the linguistics of
+  passage boundary definition and the theory described in this
+  document.</p><h4>Step 6: Use the Action Buttons</h4><p>Whether you accept
+  the passage or not, recall that rejecting passages is better than adding
+  mediocre passages that will decrease the BERT model
+  performance.</p></section></main><h3>Annotation Checklist</h3><p>Follow this
+  checklist in your annotation process:</p><ol>
+      <li><p><strong>Confirm presence of a political issue of
+      interest</strong>: Disambiguate synonyms or terms with another meaning.
+      For instance, the term "<kbd>work</kbd>". In this case, the political
+      issue of interest is "<kbd>employment</kbd>" (whose aliases are
+      "<kbd>work</kbd>", "<kbd>job</kbd>", etc.), and not the action of
+      "<kbd>work</kbd>" (a verb) or the use of work in another context, like
+      "<kbd>you did a good work</kbd>." Disambiguation, in many cases, is
+      necessary.</p></li>
+
+      <li><p><strong>Identify if noisy text is in "outside" or "inside"
+      sentences</strong>: Confirm only natural language is part of the
+      extracted passages ("inside") and its "outside" sentences. Speaker
+      labels, dates, links, Etc. are not natural language, and they should
+      never be part of an annotated passage. "Outside" sentences also must be
+      composed of natural language text.</p></li>
+
+      <li><p><strong>Confirm if passage is part of political
+      discourse</strong>: Ensure the passage is part of transcribed
+      conferences, interviews, speeches, remarks, Etc. Recall that many
+      political discourses have contextual information about the discourse,
+      like summaries, credits, introductions, abstracts, etc., usually
+      surrounding the political discourse itself. Avoid written text, such as
+      press releases or similar.</p></li>
+
+      <li><p><strong>Confirm the passage focuses on one (1) or two (2)
+      political issues</strong>: Avoid passages that refer to so many topics
+      simultaneously. We want our model to extract passages related to one or
+      two topics at the most (especially if both are closely related) to
+      capture the important facts of political discourse. </p></li>
+
+      <li><p><strong>Confirm cohesion</strong>: Recall that a cohesive text
+      segment holds different continuity links (explained above) to capture a
+      distinguishable clear meaning about something in particular. No element
+      should be missing or left over. Use the metadata shown in the JS console
+      as a guide. Recall that that data is only referential, and you never use
+      it as a conclusive way to delimit passage boundaries. <strong
+      style="color: red">A passage of only one sentence that conveys a whole
+      cohesive idea is allowed</strong>.</p></li>
+
+      <li><p><strong>Confirm coherence</strong>: Recall that you are dealing
+      with raw text massively scraped from the WWW, and undesirable text may
+      have been included in texts. Therefore, you must confirm the passage is
+      coherent, makes sense, and presents a logical sequence of
+      ideas.</p></li>
+
+      <li><p><strong>Confirm topic shift</strong>: A topic shift may indicate
+      the location of the passage boundaries. Although a topic shift is a good
+      indicator, use cohesion as the most important indicator to define
+      passage boundaries.</p></li>
+
+      <li><p><strong>Avoid missing coreferences</strong>: avoid passages that
+      have coreferences to issues (entities or nouns) previously introduced
+      outside the passage. Allow exophoric coreferences, by evaluating first
+      if those rely on reader/listener common or implicit knowledge or
+      context. Avoid passages that have unresolved intra-textual correference,
+      like anaphora or anaphora. Treat "<kbd>that</kbd>" with care; sometimes,
+      it may refer to something "exophoric." Use your understanding of context
+      and linguistics to make decisions.</p></li>
+
+      <li><p><strong>Shorten or extend passage if necessary</strong>:
+      Sometimes, a passage can be improved by shortening or extending one
+      sentence or two. Do this by evaluating all the previous checks in this
+      list.</p></li>
+    </ol><h3>Examples</h3><h4>Example 1 (Accepted, with no
+  adjustments):</h4><pre><span style="color: white">a)</span> <span
+        style="color: yellow">This includes seeking the advice of healthcare providers, who can better educate patients of the 
+importance of getting appropriate cancer screening tests at the right time, knowing their family 
+history and other risk factors, and making lifestyle changes that may reduce the possibility of 
+breast cancer.</span>
+
+<span style="color: white">b) My Administration is committed to supporting our Nation's dedicated researchers in their diligent 
+efforts to advance medical breakthroughs that will save and improve lives.</span>
+
+<span style="color: white">c) Earlier this year, I signed into law Federal Right to Try legislation, which provides those 
+diagnosed with a terminal <span style="color: orange">illness</span> expanded options for treatment that could save their lives.</span>
+
+<span style="color: white">d) Cutting-edge developments in the fight against breast cancer include interventions and treatments 
+that are more effective and less debilitating.</span>
+
+<span style="color: white">e)</span> <span style="color: yellow">Recently, a groundbreaking national study found that most women with an early-stage diagnosis of 
+the most common type of breast cancer can safely forgo chemotherapy.</span></pre><p>The
+  passage is about a law that gives more treatment options for patients with
+  breast cancer.</p><ol>
+      <li><p>The first "inside" sentence (b) shows a good starting ("My
+      Administration...") indicating that it does not have any continuity
+      marker that depends on the previous ("outside") sentence. Although the
+      topic is the same (breast cancer), the passage shows a topic shift in
+      the discourse flow: Sentence a focuses on "the need to educate people
+      about breast cancer's risk factors". In contrast, sentence b discusses
+      "the given support to research on medical innovation."</p></li>
+
+      <li><p>The rule-based extraction algorithm found coreferences between
+      "I" in the c sentence and "My" in the b sentence, and semantic chain
+      between nouns ("lives", "illness", "research", "treatment",
+      "researcher", "legislation", "administration", etc.). The main links are
+      between "administration commitment" and "legislation", being one a
+      consequence of the other.</p></li>
+
+      <li><p>Between sentences c and d, the algorithm found a semantic chain
+      between nouns ("treatment", "terminal illness", "breast cancer",
+      "intervention", etc.</p></li>
+
+      <li><p>Sentence e represents a topic shift towards a study of women
+      diagnosed with cancer.</p></li>
+
+      <li>We also observe that:<ul>
+          <li><p>One political issue of interest is present: disease
+          (illness).</p></li>
+
+          <li><p>The passage is part of a political discourse.</p></li>
+
+          <li><p>The passage is cohesive, capturing a whole idea around the
+          political issue "illness".</p></li>
+
+          <li><p>The passage is coherent, presenting a logical order of
+          ideas.</p></li>
+
+          <li><p>Within the main topic (a law that gives more treatment
+          options for patients with breast cancer), this passage represents a
+          sub-topic with clear topic shifts</p></li>
+        </ul></li>
+    </ol><h4>Example 2 (Rejected):</h4><pre><span style="color: white">a)</span> <span
+        style="color: yellow">Senator Baldwin's legislation addresses many of the serious problems that deter young scientists 
+from pursuing careers in biomedical research and commits essential resources for supporting a 
+strong and vibrant pipeline of future scientists.</span>
+
+<span style="color: white">b) - Robert Golden, M.D., Dean at the University of Wisconsin School of Medicine and Public Health, 
+Vice Chancellor for Medical Affairs</span>
+
+<span style="color: white">c) Years of efforts by physicians, scientists, and other investigators have provided us the high 
+quality of <span style="color: orange">medical care</span> we enjoy today.</span>
+
+<span style="color: white">d)</span> <span style="color: yellow">Researchers at the University of Wisconsin School of Medicine and Public Health are at the 
+forefront of this revolution in medical knowledge.</span></pre><p>This is a
+  good example of an incoherent passage. Here are the 2 reasons why the
+  passage must be rejected:</p><ol>
+      <li><p>The two "inside", b and c, sentences lack cohesion, since
+      sentence b does not convey any meaning as part of a discourse.</p></li>
+
+      <li><p>Sentence c conveys a cohesive meaning about "medical care";
+      however, if we shorten the passage from the upper edge, sentence b would
+      be the upper "outside" sentence, but we would not accomplish that
+      "inside" and "outside" sentences must be composed of natural
+      language.</p></li>
+    </ol><h4>Example 3 (Accepted, with no adjustments):</h4><pre><span
+        style="color: white">a)</span> <span style="color: yellow">And look at the world on this bright August night.</span>
+
+<span style="color: white">b) The spirit of democracy is sweeping the Pacific rim.</span>
+
+<span style="color: white">c) <span style="color: orange">China</span> feels the winds of change.</span>
+
+<span style="color: white">d) New democracies assert themselves in South America.</span>
+
+<span style="color: white">e) And one by one, the unfree places fall, not to the force of arms but to the force of an idea: 
+Freedom works.</span>
+
+<span style="color: white">f) And we have a new relationship with the Soviet Union: the INF Treaty, the beginning of the Soviet 
+withdrawal from Afghanistan, the beginning of the end of the Soviet proxy war in Angola and, with 
+it, the independence of Namibia.</span>
+
+<span style="color: white">g)</span> <span style="color: yellow">Iran and Iraq move toward peace.</span></pre><ul>
+      <li><p>Confirm presence of a political issue of interest:
+      <strong>democracy (not China)</strong>.</p></li>
+
+      <li><p>Identify if noisy text is in "outside" or "inside" sentences:
+      <strong>no</strong>.</p></li>
+
+      <li><p>Confirm if passage is part of political discourse: <strong>a
+      speech</strong>.</p></li>
+
+      <li><p>Confirm the passage focuses on one (1) or two (2) political
+      issues: <strong>yes, on democracy</strong>.</p></li>
+
+      <li><p>Confirm cohesion: <strong>yes, the passage has a clear meaning
+      about one idea</strong>.</p></li>
+
+      <li><p>Confirm coherence: <strong>the passage makes sense, and presents
+      a logical sequence of ideas</strong>.</p></li>
+
+      <li><p>Confirm topic shift: <strong>yes, the surrounding text speaks
+      about peace, but the topic shifts to democracy</strong>.</p></li>
+
+      <li><p>Avoid missing coreferences: <strong>no coreference is
+      present</strong>.</p></li>
+
+      <li><p>Shorten or extend passage if necessary: <strong>no need to adjust
+      boundaries</strong>.</p></li>
+    </ul><h4>Example 4 (Accepted with adjustments):</h4><pre><span
+        style="color: white">a)</span> <span style="color: yellow">And the United States and its partners are working around the clock, literally, to move food and 
+release supplies into Afghanistan from surrounding countries, positioning it where it will be 
+needed most as the harsh winter weather approaches.</span>
+
+<span style="color: white">b) Administrator Natsios just returned from a week in Central Asia.</span>
+
+<span style="color: white">c) He was reviewing humanitarian operations in the region, as well as in the staging areas where the 
+<span style="color: orange">aid</span> is stockpiled for the purpose of getting it onto site and helping the people who need help the 
+most.</span>
+
+<span style="color: white">d) The United States has supplied more than 80 percent of all food aid to vulnerable Afghans through 
+the United Nations World Food Program.</span>
+
+<span style="color: white">e) Last year, the United States government provided over $178 million that year alone to aid the 
+Afghan people, and the United States government has provided $237 million in aid to Afghanistan 
+thus far in 2002.</span>
+
+<span style="color: white">f) One more example on that.</span>
+
+<span style="color: white">g)</span> <span style="color: yellow">The U.S. has airlifted 20, 000 wool blankets, 100 rolls of plastic sheeting, 200 metric tons of 
+high-energy biscuits, and 1 metric ton of sugar to Turkmenistan for distribution in Afghanistan.</span></pre><ul>
+      <li><p>Confirm presence of a political issue of interest:
+      <strong>international aid in Central Asia</strong>.</p></li>
+
+      <li><p>Identify if noisy text is in "outside" or "inside" sentences:
+      <strong>no</strong>.</p></li>
+
+      <li><p>Confirm if passage is part of political discourse: <strong>an
+      interview</strong>.</p></li>
+
+      <li><p>Confirm the passage focuses on one (1) or two (2) political
+      issues: <strong>yes, on one instance of international aid in Central
+      Asia</strong>.</p></li>
+
+      <li><p>Confirm cohesion: <strong>yes, the passage has a clear meaning
+      about one idea</strong>.</p></li>
+
+      <li><p>Confirm coherence: <strong>the passage makes sense, and presents
+      a logical sequence of ideas</strong>.</p></li>
+
+      <li><p>Confirm topic shift: <strong style="color: red">no, sentence f
+      creates a continuity link to another instance of international aid in
+      Central Asia</strong>.</p></li>
+
+      <li><p>Avoid missing coreferences: <strong style="color: red">no
+      coreference is missing, but sentence f mentions a further example, not
+      included in the passage, therefore the passages would be incomplete if
+      sentence f is kept.</strong></p></li>
+
+      <li><p>Shorten or extend passage if necessary: <strong
+      style="color: red">one adjustment to shorten the lower passage edge,
+      turning sentence f into an "outside" sentence</strong>.</p></li>
+    </ul><p>After shortening the passage and turning sentence f into an
+  "outside" sentence, we make a topic shift obvious, avoiding referencing
+  another instance of international aid.</p><p>Resulting passage after
+  adjustment:</p><pre><span style="color: white">a)</span> <span
+        style="color: yellow">And the United States and its partners are working around the clock, literally, to move food and 
+release supplies into Afghanistan from surrounding countries, positioning it where it will be 
+needed most as the harsh winter weather approaches.</span>
+
+<span style="color: white">b) Administrator Natsios just returned from a week in Central Asia.</span>
+
+<span style="color: white">c) He was reviewing humanitarian operations in the region, as well as in the staging areas where the 
+<span style="color: orange">aid</span> is stockpiled for the purpose of getting it onto site and helping the people who need help the 
+most.</span>
+
+<span style="color: white">d) The United States has supplied more than 80 percent of all food aid to vulnerable Afghans through 
+the United Nations World Food Program.</span>
+
+<span style="color: white">e) Last year, the United States government provided over $178 million that year alone to aid the 
+Afghan people, and the United States government has provided $237 million in aid to Afghanistan 
+thus far in 2002.</span>
+
+<span style="color: white">f) <span style="color: yellow">One more example on that</span>.</span>
+
+<span style="color: white">g)</span> <span style="color: gray">The U.S. has airlifted 20, 000 wool blankets, 100 rolls of plastic sheeting, 200 metric tons of 
+high-energy biscuits, and 1 metric ton of sugar to Turkmenistan for distribution in Afghanistan.</span></pre><h3>Tips</h3><ol>
+      <li><p>The Annotation Tool is loaded with <strong>thousands</strong> of
+      passages; therefore, do not be afraid to ignore or reject passages that
+      demand further adjustments, show ambiguity or incoherence, or clearly
+      are not the best examples to create our dataset. Choose always the best
+      examples.</p></li>
+
+      <li><strong>Do you want to load a specific passage?</strong> Replace the
+      Passage ID in the URL after "<kbd>passage_id=</kbd>"<pre>https://annotation-nlp-rfqv643p3a-lm.a.run.app/dataset2/edit?passage_id=</pre><p>with
+      the Passage ID you want to load.</p><pre>https://annotation-nlp-rfqv643p3a-lm.a.run.app/dataset2/edit?passage_id=0000000025</pre></li>
+
+      <li><p><strong>Do you need to see information on an annotated
+      passage?</strong> Load an annotated passage ("accepted" or "rejected")
+      as described before. Despite of the UI won't show the current state of
+      the passage, it is possible to see the datapoint data in the JS
+      console:</p><figure><img alt="Annotator tool, Passage Info."
+      src="images/annotation_tool_passage_info.png" width="500" />
+      <figcaption>Annotator tool, Passage Info in two status: Rejected and
+      Accepted.</figcaption></figure></li>
+
+      <li><p><strong>Do you need to know what datapoints have been tagged by
+      you?</strong> Just download your dataset by clicking the "Download
+      Dataset 2".</p></li>
+    </ol></section><footer><p>---</p><p><small>This documentation was
+  developed by Juan-Francisco Reyes for the seminar on Information Extraction
+  from Web Resources at the Brandenburgische Technische Universität
+  Cottbus-Senftenberg in the Winter semester of 2023/24.</small></p> <small>©
+  2024 Juan-Francisco Reyes</small> </footer></body>
+</html>

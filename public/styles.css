@@ -179,10 +179,10 @@ ul.role-booklist-entries ul {
 }
 
 pre {
-        background-color: #161625;
-    color: #9d9d9d;
-    padding: 1em;
-    overflow-x: auto;
-    font-family: monospace;
-    font-size: 0.9em;
+  background-color: #161625;
+  color: #9d9d9d;
+  padding: 1em;
+  overflow-x: auto;
+  font-family: monospace;
+  font-size: 0.9em;
 }

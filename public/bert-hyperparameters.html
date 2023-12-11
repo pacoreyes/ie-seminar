@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta content="width=device-width,initial-scale=1" name="viewport" />
+
+    <link href="styles.css" rel="stylesheet" />
+
+    <title>IE Seminar - Fine-tuning a BERT model</title>
+  </head>
+
+  <body><header> <a href="index.html"> « IE Seminar</a> </header><section><div
+  class="main-title"><h1>BERT Hyperparamters: A Guide to Fine Tune BERT
+  models</h1><p><strong>Institute of Computer Science, Brandenburgische
+  Technische Universität Cottbus-Senftenberg</strong><br /> Juan-Francisco
+  Reyes<br /> pacoreyes@protonmail.com</p></div><main><section><p
+  style="color: red">### THIS PAGE WILL BE UPDATED PERMANENTLY BASED ON
+  INTERACTIONS ON THE FORUM, RETURN OFTEN</p><h3>Overview</h3><p>This document
+  delineates the most important concepts to fine-tune BERT
+  models..</p><h3></h3><p>""" Detecting subtle topic shifts in text is a
+  challenging task, and fine-tuning a BERT model to capture these nuances
+  requires careful consideration of various factors, including
+  hyperparameters. Here are some strategies and hyperparameter adjustments
+  that can help your BERT model become more sensitive to subtle topic shifts:
+  Learning Rate: A lower learning rate can sometimes help the model learn
+  finer details by making smaller updates to the weights. However, it's
+  important to balance this as too low a rate might lead to slow convergence
+  or getting stuck in local minima. Consider experimenting with learning rates
+  in the lower end of the typical range for BERT (e.g., 1e-5 to 3e-5). Batch
+  Size: A smaller batch size can lead to a more fine-grained update of
+  weights. It might help the model to pick up subtleties in the data, but it
+  can also increase training time and variance in training. Number of Epochs:
+  Increasing the number of training epochs allows the model more opportunity
+  to learn from the data. However, be cautious of overfitting. Implement early
+  stopping or monitor validation loss to prevent this. Regularization: Weight
+  decay and dropout are forms of regularization that can prevent overfitting.
+  However, if they are too high, they might prevent the model from learning
+  the finer details. Adjust these parameters to find a good balance. Class
+  Weights: If certain types of topic shifts are more subtle and thus harder to
+  classify, consider adjusting the class weights to give more emphasis to
+  these categories. Fine-tuning Strategy: Gradual unfreezing: Start by
+  fine-tuning only the top layers of the model, and gradually unfreeze more
+  layers. This can help in adapting the model more precisely to your task
+  without losing the pre-trained knowledge in the lower layers. Layer-wise
+  learning rate: Implement different learning rates for different layers.
+  Lower layers could have a smaller learning rate (as they contain more
+  general knowledge), while higher layers could have a higher rate (as they
+  need more task-specific tuning). Data Augmentation: Consider augmenting your
+  data to include more examples of subtle topic shifts. Techniques like
+  back-translation or paraphrasing can create variations of existing sentences
+  that maintain the subtle shifts. Sequence Length: Ensure that the sequence
+  length is appropriate. If the subtleties of the topic shifts are
+  context-dependent, longer sequence lengths might capture more necessary
+  context. However, be mindful of BERT's maximum sequence length limit. Model
+  Complexity: If computational resources allow, experimenting with larger
+  versions of BERT (like BERT-Large) might help, as they can potentially
+  capture more complex patterns in the data. Evaluation Metrics: Use metrics
+  that can capture the performance on subtle shifts effectively. Precision,
+  recall, and F1-score for each class can provide insights into how well the
+  model is capturing these nuances. It's important to note that there is no
+  one-size-fits-all set of hyperparameters. The optimal configuration can vary
+  depending on the specific characteristics of your data and the subtleties
+  you are trying to capture. Experimentation and validation are key to finding
+  the right balance. Additionally, continually reviewing examples where the
+  model fails to detect subtle shifts can provide insights into further
+  adjustments and improvements.
+  """</p></section></main></section><footer><p>---</p><p><small>This
+  documentation was developed by Juan-Francisco Reyes for the seminar on
+  Information Extraction from Web Resources at the Brandenburgische Technische
+  Universität Cottbus-Senftenberg in the Winter semester of
+  2023/24.</small></p> <small>© 2024 Juan-Francisco Reyes</small>
+  </footer></body>
+</html>

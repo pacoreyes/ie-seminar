@@ -146,6 +146,10 @@ th {
   font-weight: normal;
 }
 
+table, th, td {
+  border: 1px solid black;
+}
+
 figcaption {
   font-size: smaller;
 }

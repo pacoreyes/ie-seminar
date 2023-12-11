@@ -11,12 +11,428 @@
   </head>
 
   <body><header> <a href="index.html"> « IE Seminar</a> </header><section><div
-  class="main-title"><h1>IE seminar - Documentation</h1><p><strong>Institute
-  of Computer Science, Brandenburgische Technische Universität
-  Cottbus-Senftenberg</strong><br /> Juan-Francisco Reyes<br />
+  class="main-title"><h1>BERT Model 2: Fine-Tuning Deep-Learning Model for
+  Passage Boundary Detection</h1><p><strong>Institute of Computer Science,
+  Brandenburgische Technische Universität Cottbus-Senftenberg</strong><br />
+  Juan-Francisco Reyes<br />
   pacoreyes@protonmail.com</p></div><main><section><p style="color: red">###
   THIS PAGE WILL BE UPDATED PERMANENTLY BASED ON INTERACTIONS ON THE FORUM,
-  RETURN OFTEN</p></section></main></section><footer><p>---</p><p><small>This
+  RETURN OFTEN</p><h3>Overview</h3><p>This document delineates the process of
+  preprocessing Dataset 2 and fine-tuning a BERT model for binary text
+  classification.</p><h3>Challenges in Passage Boundary
+  Detection</h3><p>Passage Boundary Detection (PBD) refers to identifying the
+  boundaries between distinct passages or segments within a text, which is
+  essential for tasks such as document summarization, information retrieval,
+  and text segmentation, where understanding the structure of the text is
+  crucial. The main challenges in PSB are:</p><ol>
+      <li><p><strong>Definition agreement</strong>: There is no universal
+      agreement on what constitutes a "passage," as its definition can vary
+      significantly depending on the type of text (e.g., literary texts,
+      scientific articles, news reports, political discourse) and the specific
+      application. This variability adds complexity to designing algorithms
+      that can universally detect passage boundaries.</p></li>
+
+      <li><p><strong>Ambiguity</strong>: Unlike sentences often delimited by
+      clear punctuation marks, passage boundaries can be vague and unclear.
+      Identifying where one passage ends and another begins requires
+      understanding the linguistic features that link sentences, context, the
+      topic, and sometimes the subtle topic shifts.</p></li>
+
+      <li><p><strong>Continuity</strong>: Passages may have thematic or
+      contextual overlaps, making determining where one topic ends and another
+      begins is challenging. In fine-grained PBD, distinguishing these subtle
+      changes in topic or perspective requires a sophisticated understanding
+      and analysis of the text.</p></li>
+
+      <li><p><strong>Variability</strong>: Variations in writing style,
+      language use, and narrative techniques across different authors and text
+      types can impact the effectiveness of PBD algorithms. Detecting
+      boundaries in more stylistically complex or linguistically diverse texts
+      can be particularly challenging.</p></li>
+
+      <li><p><strong>Advanced NLP</strong>: Effective fine-grained PBD often
+      requires advanced NLP techniques to understand nuanced language patterns
+      and contextual cues. However, overall, these techniques require mainly
+      well-annotated datasets for training.</p></li>
+
+      <li><p><strong>Linguistic analysis</strong>: Understanding coherence
+      (logical flow and connection between ideas) and cohesion (the
+      grammatical and lexical linking within a text) is vital for effective
+      PBD, allowing the model to process the text at a surface level and
+      understand deeper linguistic and semantic structures.</p></li>
+    </ol><h3>Annotation Approaches</h3><h4>A. Sentence Pair Labelling
+  Annotation Approach</h4><p>This approach focuses on analyzing and annotating
+  pairs of sentences to determine how they relate to each other in terms of
+  continuity and coherence. This process is fundamental in understanding the
+  flow of ideas and logical progression in a text.</p><p>Typically, the
+  annotation schema includes binary labels like "Same Topic" and "Topic
+  Change". Annotators review pairs of sentences and assign one of these labels
+  based on the thematic continuity or discontinuity. We will use the labels
+  "continue" and "not continue".</p><p>Example:</p><ol>
+      <li><p><strong>[not_continue]</strong> And I want to thank Mike. Today,
+      it's a true honor to be the first President of the United States to host
+      a meeting at the United Nations on religious freedom.</p></li>
+
+      <li><p><strong>[continue]</strong> Today, it's a true honor to be the
+      first President of the United States to host a meeting at the United
+      Nations on religious freedom. And an honor it is. It's long
+      overdue.</p></li>
+
+      <li><p><strong>[continue]</strong> And an honor it is. It's long
+      overdue. And I was shocked when I was given that statistic that I would
+      be the first.</p></li>
+
+      <li>(...)</li>
+    </ol><p>The core idea is to analyze pairs of adjacent sentences and label
+  them based on whether they continue the same topic or start a new one. This
+  binary classification (same topic vs. new topic) helps identify the points
+  where the subject matter shifts, thereby detecting topic
+  boundaries.</p><h4>B. Sequence Labelling Annotation Approach</h4><p>This
+  approach focuses on identifying and assigning labels to sequences of
+  sentences to identify and maintain the logical and coherent flow of ideas in
+  a text. The Inside-Outside-Beginning (IOB) tagging schema is a common format
+  used in sequence labelling tasks to denote the structure of phrases that
+  span multiple tokens.</p><ol>
+      <li><p><strong>Beginning (B)</strong>: This label marks the beginning of
+      a continuity sentence, signifying the start of a new argument or
+      thematic section.</p></li>
+
+      <li><p><strong>Inside (I)</strong>: This label applies to sentences
+      inside a continuity element but not the beginning sentence, representing
+      the continuation of an argument or a theme within the
+      discourse.</p></li>
+
+      <li><p><strong>Outside (O)</strong>: This label is used for sentences
+      not part of the current continuity element, signifying a topic
+      shift.</p></li>
+    </ol><p>Example:</p><ol>
+      <li><p><strong>[O]</strong> And I want to thank Mike.</p></li>
+
+      <li><p><strong>[B]</strong> Today, it's a true honor to be the first
+      President of the United States to host a meeting at the United Nations
+      on religious freedom.</p></li>
+
+      <li><p><strong>[I]</strong> And an honor it is. It's long
+      overdue.</p></li>
+
+      <li><p><strong>[I]</strong> And I was shocked when I was given that
+      statistic that I would be the first.</p></li>
+
+      <li>(...)</li>
+    </ol><p>Using the IOB tagging schema, a sequence labelling model can be
+  trained to recognize patterns of coherence and transition in text, where
+  understanding the logical flow and structure of the argument is
+  crucial.</p><h3>Files and folders structure</h3><p>This is the list of
+  provided files:</p><ul>
+      <li><p><kbd>/sentence_pair_labelling/</kbd>: folder for the sentence
+      pair labelling approach.</p><ul>
+          <li><p><kbd>build_dataset_sent_pair_labelling.py</kbd>: Script to
+          convert annotated data into dataset 2 for the pair sentence
+          labelling approach.</p></li>
+
+          <li><p><kbd>bert_train_sent_pair_labelling.py</kbd>: Script to
+          fine-tune a BERT model for sentence boundary detection using the
+          pair sentence labelling approach.</p></li>
+        </ul></li>
+
+      <li><p><kbd>/sequence_labelling/</kbd>: folder for the sequence
+      labelling approach.</p><ul>
+          <li><p><kbd>build_dataset_seq_labelling.py</kbd>: Script to convert
+          annotated data into dataset 2 for the sequence labelling
+          approach.</p></li>
+
+          <li><p><kbd>bert_train_seq_labelling.py</kbd>: Script to fine-tune a
+          BERT model for sentence boundary detection using the sequence
+          labelling approach.</p></li>
+        </ul></li>
+    </ul><h3>"Feature Engineering" and BERT Models</h3><p>In classical machine
+  learning models, feature engineering is a critical step involving selecting
+  manually and transforming raw data into a set of features that the model can
+  understand and process effectively. In contrast, Transformer models,
+  including BERT, are designed to automatically learn feature representations
+  from raw text data through multiple layers of self-attention and feedforward
+  neural networks. This process allows the model to learn complex
+  representations of the input text without explicit manual intervention in
+  the feature extraction process.</p><p>While fine-tuning BERT models does not
+  entail manually selecting or creating features, it involves selecting
+  appropriate datasets that are representative of the task at hand. For NLP
+  projects, this involves understanding linguistic structures and features in
+  the classification challenge. The diversity, representation, and quantity of
+  datapoints are crucial; thus, curating a dataset that effectively represents
+  the problem space and contains various examples for the model to learn from
+  is essential. Additionally, converting raw text into a format for BERT
+  models is another critical step. This process involves tokenization
+  (breaking text into tokens), adding special tokens (like <kbd>[CLS]</kbd>
+  and <kbd>[SEP]</kbd>), and creating attention masks. Finally, determining
+  appropriate hyperparameters (such as learning rate, batch size, etc.) can
+  also be considered a part of feature engineering in this context, which
+  involves tuning the model to fit the specific characteristics of the data
+  and the task better.</p><p>While feature engineering in the traditional
+  sense is not a primary concern when working with BERT and similar models,
+  the selection and preparation of data, along with model configuration and
+  hyperparameter tuning, play a crucial role in the fine-tuning process. These
+  steps ensure the model learns the most relevant features from the data for
+  the specific NLP task.</p><h3>Procedure</h3><ol>
+      <li><p>Download Dataset 2 JSON file (<kbd>dataset2_raw.jsonl</kbd>) from
+      the annotation tool.</p></li>
+
+      <li><p>According to your observations, experiment with both annotation
+      approaches and choose between them after evaluating which option is more
+      promising.</p><ul>
+          <li><p>Use the script
+          <kbd><kbd>build_dataset_sent_pair_labelling.py</kbd></kbd> to
+          generate the annotated dataset for the sentence pair labelling
+          annotation approach. The text will be automatically anonymized. A
+          new version of your dataset will be generated with the name
+          <kbd>dataset2_pair_sentence_labelling.jsonl</kbd>.</p></li>
+
+          <li><p>Use the script
+          <kbd><kbd>build_dataset_seq_labelling.py</kbd></kbd> to generate the
+          annotated dataset using the sequence labelling annotation approach.
+          The text will be automatically anonymized. A new version of your
+          dataset will be generated with the name
+          <kbd>dataset2_seq_labelling.jsonl</kbd>.</p></li>
+        </ul></li>
+
+      <li><p>Modify hyperparameters iteratively to achieve the highest
+      accuracy possible of the model. Your grade on the model performance is
+      calculated from</p><ul>
+          <li><p>achieving an accuracy not less than <kbd>0.70</kbd>,</p></li>
+
+          <li><p>achieving a balanced classification between classes
+          (according to the confusion matrix, classes must show balance),
+          and</p></li>
+
+          <li><p>avoiding overfitting and underfitting in the model according
+          to the training/validation losses visualizations.</p></li>
+        </ul></li>
+
+      <li><p>Use the visualizations to evaluate the performance of your model.
+      The <a
+      href="https://www.evidentlyai.com/classification-metrics/confusion-matrix"
+      target="_blank">confusion matrix</a> visualization must be generated
+      (<kbd>confusion_matrix_sent_pair_labelling.png</kbd> or
+      <kbd>confusion_matrix_seq_labelling.png</kbd>) to evaluate the
+      performance of the model by visualizing False and True Positives and
+      Negatives in two dimensions, "Actual" and "Predicted." The training and
+      validation losses visualization
+      (<kbd>losses_sent_pair_labelling.png</kbd> or
+      <kbd>losses_sent_pair_labelling.png</kbd>) to follow up if your model is
+      overfitting or underfitting [<a
+      href="https://medium.com/nlplanet/bert-finetuning-with-hugging-face-and-training-visualizations-with-tensorboard-46368a57fc97"
+      target="_blank">link1</a>] [<a
+      href="https://towardsdatascience.com/handling-overfitting-in-deep-learning-models-c760ee047c6e"
+      target="_blank">link2</a>]. Take the code from Project 1 to generate a
+      confusion matrix visualization.</p></li>
+
+      <li><p>The two factors in which you have full control and have the
+      higher impact io the final results are the dataset quality and training
+      hyperparameters.</p></li>
+
+      <li><p>Do "feature engineering" by completing the peer review of the
+      dataset according to the table of reviewer/reviewed. Every improvement
+      in the dataset will impact the overall result. For this purpose, you
+      will follow these steps:</p><ol type="a">
+          <li><p>Complete a last review of the annotation of passages ASAP,
+          and contact your reviewers to let them know when they may start
+          their peer review task. You can also coordinate with your reviewer
+          to do reviews in batches according to your progress - that requires
+          high organization between parties. The deadline for the peer review
+          has been extended from December 8 to December 12.</p></li>
+
+          <li><p>Every wrong passage found in the peer review must be flagged
+          as "to reject" in the IIA document, and the annotator (not the
+          reviewer) must correct the mistake or reject it. Recall that the
+          model accuracy improves whenever a wrong passage is corrected or
+          rejected. Follow what Mr Urrego has done by logging and rejecting
+          wrong datapoints in Mr Shresda's annotation on the shared Google
+          Spreadsheet.</p></li>
+
+          <li><p>Announce on the forum when you finish your peer-review task
+          to let your classmates know that an improved version of Dataset 2 is
+          available to download. Effective communication and collaborative
+          work are crucial and will be evaluated in Project 2's individual
+          grade. See grading schema.</p></li>
+        </ol><p>In the real world, building a dataset is a collaborative
+      project; therefore, any individual contribution to improve the dataset
+      will impact the model's performance and, in this case, the grade of
+      every participant. Work collaboratively!!</p></li>
+
+      <li><p>Notice that in this project, we are trying to capture nuanced
+      linguistic features that define topic shifts in political discourse.
+      Likely, the number of examples (datapoints) to fine-tune a BERT model
+      will not be enough to get a high performance. For this reason, in this
+      complex project, we are not going to be very ambitious with performance
+      metrics. However, we are going to understand the impact of the dataset
+      quality and hyperparameters on the model performance.</p></li>
+
+      <li><p>In a confusion matrix, the acceptable level of class imbalance is
+      not strictly defined and can vary significantly depending on the
+      specific context and domain of the application. A balanced dataset is
+      one where each class has approximately the same number of instances, but
+      this is not the case in many real-world scenarios, like in this project.
+      If you choose the sequence labelling approach, it will be acceptable
+      that one of the three classes (especially the "beginning" class) does
+      not have much representation in the confusion matrix. In practice, an
+      imbalance ratio of 1:10 is often considered moderately imbalanced, while
+      1:100 or greater is highly imbalanced.</p></li>
+
+      <li><p>When classes are imbalanced, accuracy becomes a less reliable
+      metric. In such cases, other metrics like precision, recall, F1 score,
+      and the area under the receiver operating characteristic curve (AUC-ROC)
+      become more important to evaluate performance correctly.</p></li>
+
+      <li><p>A guide for tuning hyperparameters in BERT models is available
+      here: <a href="bert-hyperparameters.html">BERT Hyperparamters: A Guide
+      to Fine Tune BERT models</a>.</p></li>
+
+      <li><p>There is an option to ignore segments of the dataset according to
+      the annotator. For instance, you can exclude Mr Reyes's annotations in
+      this part of the code in this way:</p><pre>if passage["metadata"]["annotator"] in ["IE-Reyes"]:
+  continue</pre><p>You can add someone else in the list to extend the ignore
+      block:</p><pre>if passage["metadata"]["annotator"] in ["IE-Reyes", "IE-Doe"]:
+  continue</pre><p>In this way, you remove segments of the dataset that, for
+      some reason, you consider they are adding noise to the model. Always
+      ignore Mr Reyes's datapoints as implemented in the code.</p></li>
+
+      <li>Each datapoint will be reviewed on a second review iteration, which
+      will define individual grades.</li>
+    </ol><h3>Grading Schema</h3><table>
+      <thead>
+        <tr>
+          <th><strong>Area</strong></th>
+
+          <th><strong>Task</strong></th>
+
+          <th><strong>Description</strong></th>
+
+          <th><strong>Point weight</strong></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td rowspan="2">Dataset</td>
+
+          <td>Annotation</td>
+
+          <td>Quality, completion of annotation:<ul>
+              <li><p>1 wrong passage: 2.70.</p></li>
+
+              <li><p>2 wrong passages: 2.40.</p></li>
+
+              <li><p>3 wrong passages: 2.10.</p></li>
+
+              <li><p>4 wrong passages: 1.80.</p></li>
+
+              <li><p>5 wrong passages: 1.50.</p></li>
+
+              <li><p>6 wrong passages: 1.20.</p></li>
+
+              <li><p>7 wrong passages: 0.90.</p></li>
+
+              <li><p>8 wrong passages: 0.60.</p></li>
+
+              <li><p>9 wrong passages: 0.30.</p></li>
+
+              <li><p>10 wrong passages: 0.</p></li>
+            </ul></td>
+
+          <td>3</td>
+        </tr>
+
+        <tr>
+          <td>Peer review</td>
+
+          <td>Quality, completion of annotation in assigned dataset:<ul>
+              <li><p>1 wrong passage: 1.80.</p></li>
+
+              <li><p>2 wrong passages: 1.60.</p></li>
+
+              <li><p>3 wrong passages: 1.40.</p></li>
+
+              <li><p>4 wrong passages: 1.20.</p></li>
+
+              <li><p>5 wrong passages: 1.00.</p></li>
+
+              <li><p>6 wrong passages: 0.80.</p></li>
+
+              <li><p>7 wrong passages: 0.60.</p></li>
+
+              <li><p>8 wrong passages: 0.40.</p></li>
+
+              <li><p>9 wrong passages: 0.20.</p></li>
+
+              <li><p>10 wrong passages: 0.</p></li>
+            </ul></td>
+
+          <td>2</td>
+        </tr>
+
+        <tr>
+          <td rowspan="3">Model</td>
+
+          <td>Metrics</td>
+
+          <td>Accuracy not less than 0.70.</td>
+
+          <td>2</td>
+        </tr>
+
+        <tr>
+          <td>Confusion matrix</td>
+
+          <td><ul>
+              <li><p>Moderated imbalance ratio (1:10): 1.25.</p></li>
+
+              <li><p>High imbalance, ratio (1:100): 0.</p></li>
+            </ul></td>
+
+          <td>1.25</td>
+        </tr>
+
+        <tr>
+          <td>Training/Validation Loss</td>
+
+          <td>The model is neither overfitted not underfitted, according to
+          visualizations in readings provided above.</td>
+
+          <td>1.25</td>
+        </tr>
+
+        <tr>
+          <td>Participation</td>
+
+          <td></td>
+
+          <td>Communication on the forum and collaborative work.</td>
+
+          <td>0.5</td>
+        </tr>
+
+        <tr>
+          <td>Late submission</td>
+
+          <td></td>
+
+          <td>Deducted points per day.</td>
+
+          <td>-0.20</td>
+        </tr>
+
+        <tr>
+          <td><strong>Total</strong></td>
+
+          <td></td>
+
+          <td></td>
+
+          <td><strong>10</strong></td>
+        </tr>
+      </tbody>
+    </table></section> <section><h3>Baseline</h3><h4>Pair Sentences
+  Labelling</h4><p></p><h4>Sequence
+  Labelling</h4></section></main></section><footer><p>---</p><p><small>This
   documentation was developed by Juan-Francisco Reyes for the seminar on
   Information Extraction from Web Resources at the Brandenburgische Technische
   Universität Cottbus-Senftenberg in the Winter semester of

@@ -199,13 +199,13 @@
       calculated from</p><ul>
           <li><p>achieving an accuracy not less than <kbd>0.70</kbd>,</p></li>
 
-          <li><p>achieving a balanced classification between classes
-          (according to the confusion matrix, classes must show balance),
-          and</p></li>
+          <li><p>achieving a balanced ratio between classes (according to the
+          confusion matrix), and</p></li>
 
           <li><p>avoiding overfitting and underfitting in the model according
           to the training/validation losses visualizations.</p></li>
-        </ul></li>
+        </ul><p>These three criteria must be accomplished in conjunction to
+      get the maximal grade in model performance.</p></li>
 
       <li><p>Use the visualizations to evaluate the performance of your model.
       The <a
@@ -214,19 +214,24 @@
       (<kbd>confusion_matrix_sent_pair_labelling.png</kbd> or
       <kbd>confusion_matrix_seq_labelling.png</kbd>) to evaluate the
       performance of the model by visualizing False and True Positives and
-      Negatives in two dimensions, "Actual" and "Predicted." The training and
-      validation losses visualization
+      Negatives in two dimensions, "Actual" and "Predicted". Take the code
+      from Project 1 to generate a confusion matrix visualization. The
+      training and validation losses visualization
       (<kbd>losses_sent_pair_labelling.png</kbd> or
       <kbd>losses_sent_pair_labelling.png</kbd>) to follow up if your model is
       overfitting or underfitting [<a
       href="https://medium.com/nlplanet/bert-finetuning-with-hugging-face-and-training-visualizations-with-tensorboard-46368a57fc97"
       target="_blank">link1</a>] [<a
       href="https://towardsdatascience.com/handling-overfitting-in-deep-learning-models-c760ee047c6e"
-      target="_blank">link2</a>]. Take the code from Project 1 to generate a
-      confusion matrix visualization.</p></li>
+      target="_blank">link2</a>]. Ideally, you want both training and
+      validation losses to decrease over time as the model learns from the
+      data. If the validation loss starts to increase while the training loss
+      continues to decrease, it may indicate overfitting, meaning the model is
+      learning the training data too closely and not generalizing well to new,
+      unseen data.</p></li>
 
       <li><p>The two factors in which you have full control and have the
-      higher impact io the final results are the dataset quality and training
+      higher impact on the final results are the dataset quality and training
       hyperparameters.</p></li>
 
       <li><p>Do "feature engineering" by completing the peer review of the
@@ -237,8 +242,12 @@
           and contact your reviewers to let them know when they may start
           their peer review task. You can also coordinate with your reviewer
           to do reviews in batches according to your progress - that requires
-          high organization between parties. The deadline for the peer review
-          has been extended from December 8 to December 12.</p></li>
+          high organization between parties. <span style="color: red">The
+          deadline for the peer review has been extended from December 8 to
+          December 13 at 6:00. From that point, Dataset 2 will be downloaded
+          and the grading process for dataset building (3 points) and dataset
+          peer review (2 points) will begin; therefore, no change should be
+          made to the dataset afterward</span>.</p></li>
 
           <li><p>Every wrong passage found in the peer review must be flagged
           as "to reject" in the IIA document, and the annotator (not the
@@ -370,11 +379,19 @@
         </tr>
 
         <tr>
-          <td rowspan="3">Model</td>
+          <td rowspan="3">Model performance</td>
 
           <td>Metrics</td>
 
-          <td>Accuracy not less than 0.70.</td>
+          <td>Accuracy not less than 0.70.<ul>
+              <li>0.600 - 0.649: 0.50 points.</li>
+
+              <li>0.650 - 0.699: 1 point.</li>
+
+              <li>0.700 - 0.709: 1.75 points.</li>
+
+              <li>+0.710: 2 points.</li>
+            </ul></td>
 
           <td>2</td>
         </tr>

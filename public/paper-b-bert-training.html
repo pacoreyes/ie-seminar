@@ -60,15 +60,15 @@
       grammatical and lexical linking within a text) is vital for effective
       PBD, allowing the model to process the text at a surface level and
       understand deeper linguistic and semantic structures.</p></li>
-    </ol><h3>Annotation Approaches</h3><h4>Sentence Pair Labelling Annotation
-  Approach</h4><p>This approach focuses on analyzing and annotating pairs of
-  sentences to determine how they relate to each other in terms of continuity
-  and coherence. This process is fundamental in understanding the flow of
-  ideas and logical progression in a text.</p><p>Typically, the annotation
-  schema includes binary labels like "Same Topic" and "Topic Change".
-  Annotators review pairs of sentences and assign one of these labels based on
-  the thematic continuity or discontinuity. We will use the labels "continue"
-  and "not continue".</p><p>Example:</p><ol>
+    </ol><h3>Annotation Approach: Pair Labelling</h3><p>This approach focuses
+  on analyzing and annotating pairs of sentences to determine how they relate
+  to each other in terms of continuity and coherence. This process is
+  fundamental in understanding the flow of ideas and logical progression in a
+  text.</p><p>Typically, the annotation schema includes binary labels like
+  "Same Topic" and "Topic Change". Annotators review pairs of sentences and
+  assign one of these labels based on the thematic continuity or
+  discontinuity. We will use the labels "continue" and
+  "not_continue".</p><p>Example:</p><ol>
       <li><p><strong>[not_continue]</strong> And I want to thank Mike. Today,
       it's a true honor to be the first President of the United States to host
       a meeting at the United Nations on religious freedom.</p></li>
@@ -87,18 +87,19 @@
   them based on whether they continue the same topic or start a new one. This
   binary classification (same topic vs. new topic) helps identify the points
   where the subject matter shifts, thereby detecting topic
-  boundaries.</p><h3>Files and folders structure</h3><p>This is the list of
-  provided files:</p><ul>
-      <li><p><kbd>/sentence_pair_labelling/</kbd>: folder for the sentence
-      pair labelling approach.</p><ul>
-          <li><p><kbd>build_dataset_sent_pair_labelling.py</kbd>: Script to
-          convert annotated data into dataset 2 for the pair sentence
-          labelling approach.</p></li>
+  boundaries.</p><p>In this project, the annotation will be made automatically
+  from the annotated passages from Dataset 2. </p><h3>Files and folders
+  structure</h3><p>This is the list of provided files:</p><ul>
+      <li><p><kbd>build_dataset_baseline.py</kbd>: Script to convert annotated
+      data into dataset 2 for the pair sentence labelling approach.</p></li>
 
-          <li><p><kbd>bert_train_sent_pair_labelling.py</kbd>: Script to
-          fine-tune a BERT model for sentence boundary detection using the
-          pair sentence labelling approach.</p></li>
-        </ul></li>
+      <li><p><kbd>dl_bert_train.py</kbd>: Script to fine-tune a BERT model for
+      sentence boundary detection using the pair sentence labelling
+      approach.</p></li>
+
+      <li><kbd>dataset2_raw.jsonl</kbd>: Downloaded from the Annotation Tool
+      on Monday, December 11, 2023, at 10:59. For reproducibility of the model
+      baseline results described in this document.</li>
     </ul><h3>"Feature Engineering" and BERT Models</h3><p>In classical machine
   learning models, feature engineering is a critical step involving selecting
   manually and transforming raw data into a set of features that the model can
@@ -126,7 +127,48 @@
   the selection and preparation of data, along with model configuration and
   hyperparameter tuning, play a crucial role in the fine-tuning process. These
   steps ensure the model learns the most relevant features from the data for
-  the specific NLP task.</p><h3>Procedure</h3><ol>
+  the specific NLP task.</p><h3>Before You Begin</h3><p>Do "feature
+  engineering" by completing first the peer review of the dataset according to
+  the table of reviewer/reviewed. Every improvement in the dataset will impact
+  the overall result. For this purpose, you will follow these steps:</p><ol
+      type="a">
+      <li><p>Complete a last review of the annotation of passages ASAP, and
+      contact your reviewers to let them know when they may start their peer
+      review task. You can also coordinate with your reviewer to do reviews in
+      batches according to your progress - that requires high organization
+      between parties. <span style="color: red">The deadline for the peer
+      review has been extended from December 8 to December 13 at 6:00. From
+      that point, Dataset 2 will be downloaded and the grading process for
+      dataset building (3 points) and dataset peer review (2 points) will
+      begin; therefore, no change should be made to the dataset
+      afterward</span>.</p></li>
+
+      <li><p>Every wrong passage found in the peer review must be flagged as
+      "to reject" in the IIA document, and the annotator (not the reviewer)
+      must correct the mistake or reject it. Recall that the model accuracy
+      improves whenever a wrong passage is corrected or rejected. Follow what
+      Mr Urrego has done by logging and rejecting wrong datapoints in Mr
+      Shresda's annotation on the shared Google Spreadsheet.</p></li>
+
+      <li><p>Announce on the forum when you finish your peer-review task to
+      let your classmates know that an improved version of Dataset 2 is
+      available to download. Effective communication and collaborative work
+      are crucial and will be evaluated in Project 2's individual grade. See
+      grading schema.</p></li>
+    </ol><p>In the real world, building a dataset is a collaborative project;
+  therefore, any individual contribution to improve the dataset will impact
+  the model's performance and, in this case, the grade of every participant.
+  Work collaboratively!!</p><p>Notice that in this project, we are trying to
+  capture nuanced linguistic features that define topic shifts in political
+  discourse. Likely, the number of examples (datapoints) to fine-tune a BERT
+  model will not be enough to get a high performance. For this reason, in this
+  complex project, we are not going to be very ambitious with performance
+  metrics.</p><h3>Procedure</h3><ol>
+      <li>The two factors in which you have full control and have the higher
+      impact on the final results are the dataset quality and training
+      hyperparameters. Therefore, don't expect a higher performance in your
+      model if your annotation work is poor.</li>
+
       <li><p>Download Dataset 2 JSON file (<kbd>dataset2_raw.jsonl</kbd>) from
       the annotation tool.</p></li>
 
@@ -137,20 +179,13 @@
       your dataset will be generated with the name
       <kbd>dataset2_pair_sentence_labelling.jsonl</kbd>.</p></li>
 
+      <li>Study the model baseline and grading schema.</li>
+
       <li><p>Modify hyperparameters iteratively to achieve the highest
-      accuracy possible of the model. Your grade on the model performance is
-      calculated from</p><ul>
-          <li><p>achieving an accuracy not less than <kbd>0.70</kbd>,</p></li>
+      accuracy possible of the model. See grading schema to see how your grade
+      is calculated.</p></li>
 
-          <li><p>achieving a balanced ratio between classes (according to the
-          confusion matrix), and</p></li>
-
-          <li><p>avoiding overfitting and underfitting in the model according
-          to the training/validation losses visualizations.</p></li>
-        </ul><p>These three criteria must be accomplished in conjunction to
-      get the maximal grade in model performance.</p></li>
-
-      <li><p>Use the visualizations to evaluate the performance of your model.
+      <li><p>Use the visualizations to evaluate the performance of the model.
       The <a
       href="https://www.evidentlyai.com/classification-metrics/confusion-matrix"
       target="_blank">confusion matrix</a> visualization must be generated
@@ -165,51 +200,6 @@
       target="_blank">link1</a>] [<a
       href="https://towardsdatascience.com/handling-overfitting-in-deep-learning-models-c760ee047c6e"
       target="_blank">link2</a>].</p></li>
-
-      <li><p>The two factors in which you have full control and have the
-      higher impact on the final results are the dataset quality and training
-      hyperparameters.</p></li>
-
-      <li><p>Do "feature engineering" by completing the peer review of the
-      dataset according to the table of reviewer/reviewed. Every improvement
-      in the dataset will impact the overall result. For this purpose, you
-      will follow these steps:</p><ol type="a">
-          <li><p>Complete a last review of the annotation of passages ASAP,
-          and contact your reviewers to let them know when they may start
-          their peer review task. You can also coordinate with your reviewer
-          to do reviews in batches according to your progress - that requires
-          high organization between parties. <span style="color: red">The
-          deadline for the peer review has been extended from December 8 to
-          December 13 at 6:00. From that point, Dataset 2 will be downloaded
-          and the grading process for dataset building (3 points) and dataset
-          peer review (2 points) will begin; therefore, no change should be
-          made to the dataset afterward</span>.</p></li>
-
-          <li><p>Every wrong passage found in the peer review must be flagged
-          as "to reject" in the IIA document, and the annotator (not the
-          reviewer) must correct the mistake or reject it. Recall that the
-          model accuracy improves whenever a wrong passage is corrected or
-          rejected. Follow what Mr Urrego has done by logging and rejecting
-          wrong datapoints in Mr Shresda's annotation on the shared Google
-          Spreadsheet.</p></li>
-
-          <li><p>Announce on the forum when you finish your peer-review task
-          to let your classmates know that an improved version of Dataset 2 is
-          available to download. Effective communication and collaborative
-          work are crucial and will be evaluated in Project 2's individual
-          grade. See grading schema.</p></li>
-        </ol><p>In the real world, building a dataset is a collaborative
-      project; therefore, any individual contribution to improve the dataset
-      will impact the model's performance and, in this case, the grade of
-      every participant. Work collaboratively!!</p></li>
-
-      <li><p>Notice that in this project, we are trying to capture nuanced
-      linguistic features that define topic shifts in political discourse.
-      Likely, the number of examples (datapoints) to fine-tune a BERT model
-      will not be enough to get a high performance. For this reason, in this
-      complex project, we are not going to be very ambitious with performance
-      metrics. However, we are going to understand the impact of the dataset
-      quality and hyperparameters on the model performance.</p></li>
 
       <li><p>In a confusion matrix, the acceptable level of class imbalance is
       not strictly defined and can vary significantly depending on the
@@ -236,9 +226,6 @@
   continue</pre><p>In this way, you remove segments of the dataset that, for
       some reason, you consider they are adding noise to the model. Always
       ignore Mr Reyes's datapoints as implemented in the code.</p></li>
-
-      <li>Each datapoint will be reviewed on a second review iteration, which
-      will define individual grades.</li>
     </ol><h3>Grading Schema</h3><table>
       <thead>
         <tr>
@@ -314,38 +301,26 @@
         <tr>
           <td rowspan="3">Model performance</td>
 
-          <td>Metrics</td>
+          <td>Metrics (*)</td>
 
-          <td>Accuracy not less than 0.70.<ul>
-              <li>0.600 - 0.649: 0.50 points.</li>
-
-              <li>0.650 - 0.699: 1 point.</li>
-
-              <li>0.700 - 0.709: 1.75 points.</li>
-
-              <li>+0.710: 2 points.</li>
-            </ul></td>
+          <td>Accuracy above 0.750</td>
 
           <td>2</td>
         </tr>
 
         <tr>
-          <td>Confusion matrix</td>
+          <td>Confusion matrix (*)</td>
 
-          <td><ul>
-              <li><p>Moderated imbalance ratio (1:10): 1.25.</p></li>
-
-              <li><p>High imbalance, ratio (1:100): 0.</p></li>
-            </ul></td>
+          <td><p>Moderated imbalance ratio (&lt;=1:20)</p></td>
 
           <td>1.25</td>
         </tr>
 
         <tr>
-          <td>Training/Validation Loss</td>
+          <td>Training/Validation Loss (*)</td>
 
           <td>The model is neither overfitted not underfitted, according to
-          visualizations in readings provided above.</td>
+          visualizations (see readings above).</td>
 
           <td>1.25</td>
         </tr>
@@ -367,7 +342,7 @@
 
           <td>Deducted points per day.</td>
 
-          <td>-0.20</td>
+          <td>-0.2</td>
         </tr>
 
         <tr>
@@ -380,8 +355,37 @@
           <td><strong>10</strong></td>
         </tr>
       </tbody>
-    </table></section> <section><h3>Model Baseline</h3><p>The provided code
-  has the following hyperparameter values:</p><ul>
+    </table></section><section><p>(*) Each grading item in Model performance
+  must be accomplished in conjunction with the others to get its maximal
+  grade. For instance, if accuracy is higher than 0.750 but there is a high
+  imbalance in the confusion matrix and the training/validation losses
+  visualization shows overfitting, only 0.75 points will be given to the three
+  items, according to this table:</p><table border="1">
+      <tr>
+        <td><strong>Case 1</strong></td>
+
+        <td><strong>Case 2</strong></td>
+
+        <td><strong>Case 3</strong></td>
+      </tr>
+
+      <tr>
+        <td>1 item achieved + 2 items not achieved</td>
+
+        <td>2 items achieved + 1 item not achieved</td>
+
+        <td>3 items achieved</td>
+      </tr>
+
+      <tr>
+        <td><kbd>0.25 x 3 = 0.75</kbd> points</td>
+
+        <td><kbd>0.5 x 3 = 1.5</kbd> points</td>
+
+        <td><kbd>5</kbd> points</td>
+      </tr>
+    </table><p></p><h3>Model Baseline</h3><p>The provided code has the
+  following hyperparameter values:</p><ul>
       <li>LEARNING_RATE = 1.5e-5</li>
 
       <li>BATCH_SIZE = 16</li>
@@ -394,17 +398,17 @@
 
       <li>DROP_OUT_RATE = 0.2</li>
     </ul><p>Resulting metrics: </p><ol>
-      <li>Accuracy: 0.656</li>
+      <li>Accuracy: 0.649</li>
 
-      <li>Precision: 0.666</li>
+      <li>Precision: 0.655</li>
 
-      <li>Recall: 0.655</li>
+      <li>Recall: 0.648</li>
 
-      <li>F1 Score: 0.650</li>
+      <li>F1 Score: 0.644</li>
 
-      <li>AUC-ROC: 0.710</li>
+      <li>AUC-ROC: 0.704</li>
 
-      <li>Matthews Correlation Coefficient (MCC): 0.320</li>
+      <li>Matthews Correlation Coefficient (MCC): 0.303</li>
 
       <li>Confusion Matrix:<table border="1">
           <tr>
@@ -418,17 +422,17 @@
           <tr>
             <td>continue</td>
 
-            <td>229</td>
+            <td>221</td>
 
-            <td>64</td>
+            <td>72</td>
           </tr>
 
           <tr>
             <td>not_continue</td>
 
-            <td>136</td>
+            <td>132</td>
 
-            <td>152</td>
+            <td>156</td>
           </tr>
         </table></li>
 
@@ -436,21 +440,21 @@
           <tr>
             <td>continue</td>
 
-            <td>Precision = 0.58</td>
+            <td>Precision = 0.59</td>
 
-            <td>Recall = 0.89</td>
+            <td>Recall = 0.52</td>
 
-            <td>F1 = 0.70</td>
+            <td>F1 = 0.55</td>
           </tr>
 
           <tr>
             <td>not_continue</td>
 
-            <td>Precision = 0.75</td>
+            <td>Precision = 0.56</td>
 
-            <td>Recall = 0.34</td>
+            <td>Recall = 0.64</td>
 
-            <td>F1 = 0.47</td>
+            <td>F1 = 0.60</td>
           </tr>
         </table></li>
     </ol><p>Training/Validation losses:</p><figure><img
@@ -462,18 +466,31 @@
   from the data. If the validation loss starts to increase while the training
   loss continues to decrease, it may indicate overfitting, meaning the model
   is learning the training data too closely and not generalizing well to new,
-  unseen data.</p><p>The visualization showed above the training and
-  validation losses over three epochs while both initially closely aligned
-  while decreasing, indicating that the model is learning and improving its
-  performance and not overfitting to the training data. After the second
-  epoch, after the point where the lines cross, the training loss continues to
-  decrease, while the validation loss starts to increase. This phenomenon
-  typically indicates that the model is beginning to overfit to the training
-  data.</p><h3>Submission of Project 2's Results</h3><p>Submit the following
-  items included in a single zip file:</p><ol>
-      <li><p><kbd>build_dataset_sent_pair_labelling.py</kbd> file.</p></li>
+  unseen data.</p><p>The visualization shows the training and validation
+  losses over three epochs initially closely aligned while decreasing,
+  indicating that the model is learning and improving its performance and not
+  overfitting to the training data. After the second epoch, where the lines
+  cross, the training loss continues to decrease, while the validation loss
+  starts to increase. This phenomenon typically indicates that the model is
+  beginning to overfit to the training data.</p><p>Accuracy (0.649): About
+  64.9% of the predictions are correct.</p><p>Precision (0.655) and Recall
+  (0.648): Precision indicates that when the model predicts a class, it is
+  correct about 65.5% of the time. Recall indicates that the model correctly
+  identifies 64.8% of all actual instances of the classes.</p><p>The Area
+  Under the Receiver Operating Characteristic (AUC-ROC) curve is above 0.7,
+  suggesting that the model has a good measure of separability. It can
+  distinguish between the classes to a good extent.</p><p>Matthews Correlation
+  Coefficient (MCC) (0.303): The MCC is low, indicating that the model's
+  predictions are not highly correlated with the actual values. MCC is a
+  balanced measure even if the classes are of very different
+  sizes.</p><p>Confusion Matrix: The confusion matrix shows that the model is
+  better at predicting 'continue' correctly than 'not_continue'. However,
+  there is a significant number of false positives and false negatives for
+  both classes.</p><h3>Submission of Project 2's Results</h3><p>Submit the
+  following items included in a single zip file:</p><ol>
+      <li><p><kbd>build_dataset_baseline.py</kbd> file.</p></li>
 
-      <li><kbd>bert_train_sent_pair_labelling.py</kbd> file.</li>
+      <li><kbd>dl_bert_train.py</kbd> file.</li>
 
       <li><p><kbd>dataset2_model_confusion_matrix.png</kbd> file.</p></li>
 

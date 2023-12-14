@@ -90,16 +90,13 @@
   boundaries.</p><p>In this project, the annotation will be made automatically
   from the annotated passages from Dataset 2. </p><h3>Files and folders
   structure</h3><p>This is the list of provided files:</p><ul>
-      <li><p><kbd>build_dataset_baseline.py</kbd>: Script to convert annotated
-      data into dataset 2 for the pair sentence labelling approach.</p></li>
-
-      <li><p><kbd>dl_bert_train.py</kbd>: Script to fine-tune a BERT model for
-      sentence boundary detection using the pair sentence labelling
+      <li><p><kbd>build_dataset2_baseline.py</kbd>: Script to convert
+      annotated data into dataset 2 for the pair sentence labelling
       approach.</p></li>
 
-      <li><kbd>dataset2_raw.jsonl</kbd>: Downloaded from the Annotation Tool
-      on Monday, December 11, 2023, at 10:59. For reproducibility of the model
-      baseline results described in this document.</li>
+      <li><p><kbd>bert_model_2_training.py</kbd>: Script to fine-tune a BERT
+      model for sentence boundary detection using the pair sentence labelling
+      approach.</p></li>
     </ul><h3>"Feature Engineering" and BERT Models</h3><p>In classical machine
   learning models, feature engineering is a critical step involving selecting
   manually and transforming raw data into a set of features that the model can
@@ -137,7 +134,7 @@
       review task. You can also coordinate with your reviewer to do reviews in
       batches according to your progress - that requires high organization
       between parties. <span style="color: red">The deadline for the peer
-      review has been extended from December 8 to December 13 at 6:00. From
+      review has been extended from December 8 to December 14 at 10:00. From
       that point, Dataset 2 will be downloaded and the grading process for
       dataset building (3 points) and dataset peer review (2 points) will
       begin; therefore, no change should be made to the dataset
@@ -164,55 +161,69 @@
   model will not be enough to get a high performance. For this reason, in this
   complex project, we are not going to be very ambitious with performance
   metrics.</p><h3>Procedure</h3><ol>
-      <li>The two factors in which you have full control and have the higher
-      impact on the final results are the dataset quality and training
-      hyperparameters. Therefore, don't expect a higher performance in your
-      model if your annotation work is poor.</li>
+      <li>Recall that the two factors in which you have full control and have
+      the higher impact on the final results are the dataset quality and
+      training hyperparameters. Therefore, don't expect a higher performance
+      in your model if your annotation work is poor.</li>
 
-      <li><p>Download Dataset 2 JSON file (<kbd>dataset2_raw.jsonl</kbd>) from
-      the annotation tool.</p></li>
+      <li><p>Download the different versions of Dataset 2 JSONL file. Each
+      version represents a different state of the dataset along the
+      improvement process:</p><ul>
+          <li><p><a download="dataset2_raw_dec_11.jsonl"
+          href="datasets/dataset2_raw_dec_11.jsonl"><kbd>dataset2_raw_dec_11.jsonl</kbd></a>,
+          baseline (Dec 11).</p></li>
 
-      <li><p>Use the script
-      <kbd><kbd>build_dataset_sent_pair_labelling.py</kbd></kbd> to generate
-      the annotated dataset for the sentence pair labelling annotation
-      approach. The text will be automatically anonymized. A new version of
-      your dataset will be generated with the name
-      <kbd>dataset2_pair_sentence_labelling.jsonl</kbd>.</p></li>
+          <li><p><a download="dataset2_raw_dec_13a.jsonl"
+          href="datasets/dataset2_raw_dec_13a.jsonl"><kbd>dataset2_raw_dec_13a.jsonl</kbd></a>
+          (Dec 13 at 16:00). </p></li>
+
+          <li><p><a download="dataset2_raw_dec_13b.jsonl"
+          href="datasets/dataset2_raw_dec_13b.jsonl"><kbd>dataset2_raw_dec_13b.jsonl</kbd></a>
+          (Dec 13 at 22:00).</p></li>
+
+          <li><p><a download="dataset2_raw_dec_14.jsonl"
+          href="datasets/dataset2_raw_dec_14.jsonl"><kbd>dataset2_raw_dec_14.jsonl</kbd></a>
+          before grading (Dec 15) .</p></li>
+
+          <li><p><a
+          href="datasets/dataset2_raw_dec_15.jsonl"><kbd>dataset2_raw_dec_15.jsonl</kbd></a>
+          after grading and corrections by the lecturer (Dec 15). This version
+          does not need to be preprocessed using the script
+          <kbd><kbd>build_dataset2_baseline.py</kbd></kbd>.</p></li>
+        </ul></li>
+
+      <li><p>Use the script <kbd><kbd>build_dataset2_baseline.py</kbd></kbd>
+      to generate the annotated dataset for the sentence pair labelling
+      annotation approach. The text will be automatically anonymized. Adjust
+      the name of the input dataset downloaded from the links above. After
+      processing the dataset, a new version of your dataset with the name
+      <kbd>dataset2_pair_sentences.jsonl</kbd> will be generated containing
+      pairs of sentences.</p></li>
 
       <li>Study the model baseline and grading schema.</li>
 
-      <li><p>Modify hyperparameters iteratively to achieve the highest
-      accuracy possible of the model. See grading schema to see how your grade
-      is calculated.</p></li>
+      <li><p>Use the training script <kbd>bert_model_2_training.py</kbd>.
+      Modify hyperparameters iteratively to achieve the highest accuracy
+      possible of the model. Use the different versions of the dataset to see
+      the evolution of Dataset 2 and the BERT model. Register the evolution of
+      results for the final presentation. </p></li>
 
       <li><p>Use the visualizations to evaluate the performance of the model.
       The <a
       href="https://www.evidentlyai.com/classification-metrics/confusion-matrix"
-      target="_blank">confusion matrix</a> visualization must be generated
-      (<kbd>confusion_matrix_sent_pair_labelling.png</kbd>) to evaluate the
+      target="_blank">confusion matrix</a> visualization
+      (<kbd>bert_model_2_confusion_matrix.png</kbd>) helps you to evaluate the
       performance of the model by visualizing False and True Positives and
-      Negatives in two dimensions, "Actual" and "Predicted". Take the code
-      from Project 1 to generate a confusion matrix visualization. The
-      training and validation losses visualization
-      (<kbd>losses_sent_pair_labelling.png</kbd>) to follow up if your model
-      is overfitting or underfitting [<a
+      Negatives in two dimensions, "Actual" and "Predicted". The training and
+      validation losses visualization (<kbd>bert_model_2_losses.png</kbd>) to
+      follow up if your model is overfitting or underfitting [<a
       href="https://medium.com/nlplanet/bert-finetuning-with-hugging-face-and-training-visualizations-with-tensorboard-46368a57fc97"
       target="_blank">link1</a>] [<a
       href="https://towardsdatascience.com/handling-overfitting-in-deep-learning-models-c760ee047c6e"
       target="_blank">link2</a>].</p></li>
 
-      <li><p>In a confusion matrix, the acceptable level of class imbalance is
-      not strictly defined and can vary significantly depending on the
-      specific context and domain of the application. A balanced dataset is
-      one where each class has approximately the same number of instances, but
-      this is not the case in many real-world scenarios, like in this project.
-      In practice, an imbalance ratio of 1:10 is often considered moderately
-      imbalanced, while 1:100 or greater is highly imbalanced.</p></li>
-
-      <li><p>When classes are imbalanced, accuracy becomes a less reliable
-      metric. In such cases, other metrics like precision, recall, F1 score,
-      and the area under the receiver operating characteristic curve (AUC-ROC)
-      become more important to evaluate performance correctly.</p></li>
+      <li>Implement a mechanism to stop the training process when the
+      validation loss exceeds the training loss, indicating overfitting.</li>
 
       <li><p>A guide for tuning hyperparameters in BERT models is available
       here: <a href="bert-hyperparameters.html">BERT Hyperparamters: A Guide
@@ -311,7 +322,7 @@
         <tr>
           <td>Confusion matrix (*)</td>
 
-          <td><p>Moderated imbalance ratio (&lt;=1:20)</p></td>
+          <td><p>Moderated imbalance ratio (&lt;=2:10)</p></td>
 
           <td>1.25</td>
         </tr>
@@ -384,31 +395,37 @@
 
         <td><kbd>5</kbd> points</td>
       </tr>
-    </table><p></p><h3>Model Baseline</h3><p>The provided code has the
-  following hyperparameter values:</p><ul>
-      <li>LEARNING_RATE = 1.5e-5</li>
+    </table><h3>Model Baseline</h3><p>This baseline corresponds to
+  dataset2_raw_dec_11.jsonl, and it includes the annotations of Ms Arias, Ms
+  Abanda, Ms Joseph, Mr Arayan, Mr Shrestha, and Mr Urrego; it does not
+  include the segment of Mr Asgola since, at that time, his continuation in
+  the seminar was not confirmed. I used the ignore segment option described
+  above located in the script <kbd>build_dataset2_baseline.py</kbd> to exclude
+  his annotation progress.</p><p>The provided code has the following
+  hyperparameter values:</p><ul>
+      <li>LEARNING_RATE = 1.2e-5</li>
 
       <li>BATCH_SIZE = 16</li>
 
-      <li>WARMUP_STEPS = 100</li>
+      <li>WARMUP_STEPS = 1000</li>
 
       <li>NUM_EPOCHS = 3</li>
 
-      <li>WEIGHT_DECAY = 2e-2</li>
+      <li>WEIGHT_DECAY = 1e-3</li>
 
-      <li>DROP_OUT_RATE = 0.2</li>
+      <li>DROP_OUT_RATE = 0.1</li>
     </ul><p>Resulting metrics: </p><ol>
-      <li>Accuracy: 0.649</li>
+      <li>Accuracy: 0.616</li>
 
-      <li>Precision: 0.655</li>
+      <li>Precision: 0.616</li>
 
-      <li>Recall: 0.648</li>
+      <li>Recall: 0.616</li>
 
-      <li>F1 Score: 0.644</li>
+      <li>F1 Score: 0.616</li>
 
-      <li>AUC-ROC: 0.704</li>
+      <li>AUC-ROC: 0.690</li>
 
-      <li>Matthews Correlation Coefficient (MCC): 0.303</li>
+      <li>Matthews Correlation Coefficient (MCC): 0.232</li>
 
       <li>Confusion Matrix:<table border="1">
           <tr>
@@ -422,17 +439,17 @@
           <tr>
             <td>continue</td>
 
-            <td>221</td>
+            <td>190</td>
 
-            <td>72</td>
+            <td>103</td>
           </tr>
 
           <tr>
             <td>not_continue</td>
 
-            <td>132</td>
+            <td>120</td>
 
-            <td>156</td>
+            <td>168</td>
           </tr>
         </table></li>
 
@@ -440,11 +457,11 @@
           <tr>
             <td>continue</td>
 
-            <td>Precision = 0.59</td>
+            <td>Precision = 0.55</td>
 
-            <td>Recall = 0.52</td>
+            <td>Recall = 0.62</td>
 
-            <td>F1 = 0.55</td>
+            <td>F1 = 0.58</td>
           </tr>
 
           <tr>
@@ -452,53 +469,127 @@
 
             <td>Precision = 0.56</td>
 
-            <td>Recall = 0.64</td>
+            <td>Recall = 0.49</td>
 
-            <td>F1 = 0.60</td>
+            <td>F1 = 0.52</td>
           </tr>
         </table></li>
     </ol><p>Training/Validation losses:</p><figure><img
   alt="Visualization of training/validation losses."
   src="images/baseline_model_losses.png" width="700" />
   <figcaption>Visualization of training/validation losses.
-  </figcaption></figure></section><section><p>In a good fit model, both
-  training and validation losses should decrease over time as the model learns
-  from the data. If the validation loss starts to increase while the training
-  loss continues to decrease, it may indicate overfitting, meaning the model
-  is learning the training data too closely and not generalizing well to new,
-  unseen data.</p><p>The visualization shows the training and validation
-  losses over three epochs initially closely aligned while decreasing,
-  indicating that the model is learning and improving its performance and not
-  overfitting to the training data. After the second epoch, where the lines
-  cross, the training loss continues to decrease, while the validation loss
-  starts to increase. This phenomenon typically indicates that the model is
-  beginning to overfit to the training data.</p><p>Accuracy (0.649): About
-  64.9% of the predictions are correct.</p><p>Precision (0.655) and Recall
-  (0.648): Precision indicates that when the model predicts a class, it is
-  correct about 65.5% of the time. Recall indicates that the model correctly
-  identifies 64.8% of all actual instances of the classes.</p><p>The Area
-  Under the Receiver Operating Characteristic (AUC-ROC) curve is above 0.7,
-  suggesting that the model has a good measure of separability. It can
-  distinguish between the classes to a good extent.</p><p>Matthews Correlation
-  Coefficient (MCC) (0.303): The MCC is low, indicating that the model's
-  predictions are not highly correlated with the actual values. MCC is a
-  balanced measure even if the classes are of very different
-  sizes.</p><p>Confusion Matrix: The confusion matrix shows that the model is
-  better at predicting 'continue' correctly than 'not_continue'. However,
-  there is a significant number of false positives and false negatives for
-  both classes.</p><h3>Submission of Project 2's Results</h3><p>Submit the
-  following items included in a single zip file:</p><ol>
-      <li><p><kbd>build_dataset_baseline.py</kbd> file.</p></li>
+  </figcaption></figure></section><section><h4>Before you begin</h4><p>In a
+  good fit model, both training and validation losses should decrease over
+  time as the model learns from the data. </p><ul>
+      <li><p><strong>Training Loss</strong>: This is the error on the training
+      split, which should decrease steadily as the model learns from the
+      training data.</p></li>
 
-      <li><kbd>dl_bert_train.py</kbd> file.</li>
+      <li><p><strong>Validation Loss</strong>: This is the error on a separate
+      dataset not seen by the model during training, used to evaluate the
+      model's generalization capability.</p></li>
+    </ul><p>If the validation loss starts to increase while the training loss
+  continues to decrease, it may indicate overfitting, meaning the model is
+  learning the training data too closely and not generalizing well to new,
+  unseen data. Also, it may indicate data leakage strong regularization or
+  that the model capacity is not fully utilized; that is, the model could be
+  underfitting the training set.</p>In a confusion matrix, the acceptable
+  level of class imbalance is not strictly defined and can vary significantly
+  depending on the specific context and domain of the application. A balanced
+  dataset is one where each class has approximately the same number of
+  instances, but this is not the case in many real-world scenarios, like in
+  this project. In practice, an imbalance ratio of 1:10 is often considered
+  moderately imbalanced, while 1:100 or greater is highly
+  imbalanced.<p>Reproducibility in NLP ensures that the results of a model can
+  be consistently achieved by different developers, across various
+  computational environments, and at different times.</p><h4>Results
+  analysis</h4><p>The visualization shows the training and validation losses
+  over three epochs initially closely aligned while decreasing, indicating
+  that the model is learning and improving its performance and not overfitting
+  to the training data. After the middle of the second epoch, where the lines
+  cross, the training loss decreases while the validation loss increases. This
+  phenomenon typically indicates that the model is beginning to overfit the
+  training data.</p><p>The model's accuracy is 0.616, indicating that
+  approximately 61.6% of its predictions align with the ground truth. Notably,
+  the model's precision and recall also manifest as 0.616. Precision at this
+  level suggests that, of all instances classified positively by the model,
+  61.6% are indeed positive according to the actual labels. Simultaneously,
+  the equivalent recall value indicates that the model successfully identifies
+  61.6% of the total true positive cases in the dataset. The confluence of
+  accuracy, precision, and recall at the same metric value is atypical,
+  potentially signifying a balanced distribution of classes within the
+  dataset. Moreover, it implies a symmetrical performance by the model across
+  both classes—neither favoring nor discriminating against any particular
+  class.</p><p>An F1 score of 0.616 emerges from the harmonic mean of
+  precision and recall, indicating a balanced trade-off between these metrics.
+  Unlike an arithmetic mean, the harmonic mean penalizes extreme values more
+  severely; thus, the F1 score is a more robust measure when dealing with
+  imbalanced datasets. However, in this context, where precision and recall
+  are equal, the F1 score merely mirrors these values, encapsulating the
+  model's consistent but moderate efficacy across its predictive capabilities.
+  While these observations suggest uniformity in the model's predictive
+  performance, the moderate level of these metrics indicates substantial room
+  for improvement. Specifically, enhancing the F1 score would require a
+  focused effort to concurrently elevate both precision and recall, thereby
+  achieving a more refined balance between the model's ability to accurately
+  predict positive instances and its capacity to capture the majority of
+  actual positives.</p><p>The Area Under the Receiver Operating Characteristic
+  (AUC-ROC) curve is circa 0.7, suggesting that the model has a good
+  separability measure, but further improvements are necessary. It can
+  distinguish between the classes to a reasonable extent. However, the
+  Matthews Correlation Coefficient (MCC) (0.232) is low, indicating that the
+  model's predictions are not highly correlated with the actual values. MCC is
+  a balanced measure even if the classes are of very different sizes. Consider
+  MCC as a more reliable statistical rate, which produces a high score only if
+  the prediction obtained good results in all four confusion matrix
+  categories, proportional to both class sizes. The low score indicates that
+  the model performs poorly in distinguishing between classes. You will see an
+  increase in this score when the model better understands the separation
+  between classes.</p><p>The confusion matrix shows that the model predicts
+  "continue" better than "not_continue". However, both classes have a
+  significant number of false positives and false negatives.</p><p>In the
+  current state of the dataset and model, you will get different results
+  whenever you run the script. This reproducibility issue indicates that the
+  dataset has many misclassifications. If noise is introduced into the
+  dataset, it will result in high variability in model performance across
+  different runs.</p><p>While we eliminate misclassification, we will see an
+  immediate impact in all metrics, meaning better class separations; however,
+  we should pay close attention to MMC and the balance of classes in the
+  confusion matrix to evaluate improvements.</p><h3>Submission of Project 2's
+  Results</h3><p>Submit the following items included in a single zip
+  file:</p><ol>
+      <li><p><kbd>build_dataset2_baseline.py</kbd> file.</p></li>
 
-      <li><p><kbd>dataset2_model_confusion_matrix.png</kbd> file.</p></li>
+      <li><kbd>bert_model_2_training.py</kbd> file.</li>
 
-      <li><kbd>bert_model_2_losses.png</kbd> file.</li>
+      <li><p><kbd>bert_model_2_confusion_matrix.png</kbd> file (5 versions, 1
+      per iteration/dataset version).</p></li>
 
-      <li><p><kbd>bert_model_2_metrics.txt</kbd> file with all metrics
-      information.</p></li>
-    </ol></section></main></section><footer><p>---</p><p><small>This
+      <li><kbd>bert_model_2_losses.png</kbd> file (5 versions, 1 per
+      iteration/dataset version).</li>
+
+      <li><p><kbd>bert_model_2_metrics_and_hyperparameters.txt</kbd> file with
+      all metrics information (5 versions, 1 per iteration/dataset
+      version).</p></li>
+    </ol></section><section><p>Create individual folders for the 5
+  iterations:</p><ul>
+      <li><p><kbd>run1</kbd></p></li>
+
+      <li><p><kbd>run2</kbd></p></li>
+
+      <li><p><kbd>run3</kbd></p></li>
+
+      <li><p><kbd>run4</kbd></p></li>
+
+      <li><p><kbd>run5</kbd></p></li>
+    </ul><h3>Presentation Session</h3><p>On the session of December 19, you
+  will present your results showing the evolution of 5 runs of your
+  fine-tuning process using 5 versions of the raw dataset 2. In the
+  presentations, participants will make an analysis of their results,
+  including individual metrics, visualizations, and changes between different
+  versions of the dataset.</p><p>The presentation includes the explanation of
+  the early stop mechanism implemented in the
+  code.</p></section></main></section><footer><p>---</p><p><small>This
   documentation was developed by Juan-Francisco Reyes for the seminar on
   Information Extraction from Web Resources at the Brandenburgische Technische
   Universität Cottbus-Senftenberg in the Winter semester of

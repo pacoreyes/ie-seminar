@@ -186,3 +186,20 @@ pre {
   font-family: monospace;
   font-size: 0.9em;
 }
+
+kbd {
+  color: #52792f;
+}
+
+a {
+    color: #0058ff;
+}
+
+a:hover {
+    color: #0058ff;
+    text-decoration: underline;
+}
+
+a:visited {
+    color: #4944c2;
+}

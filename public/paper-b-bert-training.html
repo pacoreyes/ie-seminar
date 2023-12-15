@@ -182,7 +182,7 @@
           (Dec 13 at 22:00).</p></li>
 
           <li><p><kbd><a download="dataset2_raw_dec_14a.jsonl"
-          href="datasets/dataset2_raw_dec_13b.jsonl">dataset2_raw_dec_14a.jsonl</a></kbd>
+          href="datasets/dataset2_raw_dec_14a.jsonl">dataset2_raw_dec_14a.jsonl</a></kbd>
           before grading (Dec 15) .</p></li>
 
           <li><p><kbd><a
@@ -229,14 +229,14 @@
       here: <a href="bert-hyperparameters.html">BERT Hyperparamters: A Guide
       to Fine Tune BERT models</a>.</p></li>
 
-      <li><p>There is an option to ignore segments of the dataset according to
-      the annotator. For instance, you can exclude Mr Reyes's annotations in
-      this part of the code in this way:</p><pre>if passage["metadata"]["annotator"] in ["IE-Reyes"]:
-  continue</pre><p>You can add someone else in the list to extend the ignore
-      block:</p><pre>if passage["metadata"]["annotator"] in ["IE-Reyes", "IE-Doe"]:
-  continue</pre><p>In this way, you remove segments of the dataset that, for
-      some reason, you consider they are adding noise to the model. Always
-      ignore Mr Reyes's datapoints as implemented in the code.</p></li>
+      <li><p>There is an option ## to ignore segments of the dataset according
+      to the annotator. For instance, you can exclude Mr Reyes's annotations
+      in this part of the code in this way:</p><pre><span style="color: white">if passage["metadata"]["annotator"] in ["IE-Reyes"]:
+  continue</span></pre><p>You can add someone else in the list to extend the
+      ignore block:</p><pre><span style="color: white">if passage["metadata"]["annotator"] in ["IE-Reyes", "IE-Doe"]:
+  continue</span></pre><p>In this way, you remove segments of the dataset
+      that, for some reason, you consider they are adding noise to the model.
+      Always ignore Mr Reyes's datapoints as implemented in the code.</p></li>
     </ol><h3>Grading Schema</h3><table>
       <thead>
         <tr>

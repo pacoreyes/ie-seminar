@@ -16,56 +16,318 @@
   Technische Universität Cottbus-Senftenberg</strong><br /> Juan-Francisco
   Reyes<br /> pacoreyes@protonmail.com</p></div><main><section><p
   style="color: red">### THIS PAGE WILL BE UPDATED PERMANENTLY BASED ON
-  INTERACTIONS ON THE FORUM, RETURN OFTEN</p><h3>Overview</h3><p>This document
-  delineates the most important concepts to fine-tune BERT
-  models..</p><h3></h3><!--p>""" Detecting subtle topic shifts in text is a
+  INTERACTIONS ON THE FORUM –RETURN OFTEN</p><p><span
+  style="color: green">NOTE: This guide complements the <a
+  href="https://huggingface.co/learn/nlp-course/" target="_blank">NLP Course
+  by the Hugging Face</a>, assuming a good understanding of the core concepts
+  of fine-tuning a BERT model described in the
+  course</span>.</p><h3>Overview</h3><p>Fine-tuning BERT (Bidirectional
+  Encoder Representations from Transformers) models involves adapting a
+  pre-trained BERT model to a specific task using a smaller, task-specific
+  dataset. Initially, BERT is trained on a large corpus to learn a wide range
+  of language representations. When you fine-tune BERT, you start with this
+  pre-trained model and continue the training process, but now the model is
+  exposed to your specific dataset related to the task at hand. During this
+  phase, the pre-trained parameters and the additional task-specific layers
+  are adjusted to better align with your specific data. The fine-tuning is
+  typically quicker than the initial training, as the model has already
+  learned a substantial amount of language understanding. The objective is to
+  leverage the generic language model of BERT and refine it to become more
+  specialized in the task context, thereby enhancing its performance on that
+  particular task while retaining its extensive language understanding
+  capabilities.</p><h3>Fine-tuning workflow</h3><p>The provided code in
+  <kbd>bert_model_2_training.py</kbd> follows the typical fine-tuning
+  workflow:</p><ol>
+      <li><p><strong>Load Model</strong>: This step is initiated by loading a
+      pre-trained BERT model from the Hugging Face model repository.</p></li>
+
+      <li><p><strong>Prepare Data</strong>: The dataset must be pre-processed
+      to match the format BERT expects, including splitting the dataset into
+      training, validation, and test sets, tokenizing the text using the same
+      tokenizer (<kbd>BertTokenizer</kbd>, in this case) that was used during
+      the BERT pre-training, and formatting the dataset into a structure
+      compatible with the model, which involves creating attention masks and
+      segment IDs.</p></li>
+
+      <li><p><strong>Define Task-Specific Head</strong>: A task-specific layer
+      or 'head' is added to the BERT model, a neural network structure
+      designed to interpret BERT's embeddings for your specific task. We load
+      <kbd>BertForSequenceClassification</kbd>, a task-specific head for
+      sequence classification, suitable for tasks like binary classification
+      or sentiment analysis.</p></li>
+
+      <li><p><strong>Configure</strong>: Configure the model's
+      hyperparameters, such as learning rate, batch size, and the number of
+      epochs. These three parameters are crucial in BERT model fine-tuning,
+      influencing the model's performance and training efficiency.</p></li>
+
+      <li><p><strong>Train</strong>: During this phase, the BERT model, along
+      with the task-specific head, is fine-tuned using the dataset. The
+      pre-existing BERT parameters and the parameters of the new head are
+      updated to fit the specific NLP task better.</p></li>
+
+      <li><p><strong>Evaluate and Validate</strong>: We evaluate the model on
+      a validation set to assess its performance after training. This step is
+      crucial to ensure that the model generalizes well and to adjust
+      hyperparameters if needed to avoid issues like overfitting.</p></li>
+
+      <li><p><strong>Test</strong>: Finally, we use the fine-tuned model to
+      make predictions on new unseen data in the test split. Here, we see the
+      practical application of our fine-tuned BERT model as it performs the
+      NLP task for which it was trained.</p></li>
+    </ol><h3>Hyperparameters in BERT Models</h3><p>Three hyperparameters are
+  crucial in the fine-tuning process of BERT models, notably the learning
+  rate, batch size, and the number of training epochs.</p><ol>
+      <li><p>The <strong>learning rate</strong> controls the magnitude of
+      updates to the model's weights during training, and it is crucial to
+      find the balance between rapid convergence (how quickly the model
+      reaches a point where it performs well) and the risk of overshooting
+      (skipping past the best) optimal solutions. A lower learning rate value
+      is often chosen for fine-tuning pre-trained models like BERT to make
+      incremental adjustments, thereby avoiding the disruption of the already
+      learned representations.</p></li>
+
+      <li><p>The <strong>batch size</strong>, determining the number of
+      training examples utilized in one iteration, significantly impacts the
+      model's training dynamics. A larger batch size value can lead to faster
+      training and smoother convergence due to more stable gradient estimates.
+      However, it also increases the computational load and may require a
+      proportionate adjustment in the learning rate. Oppositely, a smaller
+      batch size, while less computationally intensive, might lead to noisier
+      gradient estimates, potentially requiring more epochs to
+      converge.</p></li>
+
+      <li><p>The <strong>number of epochs</strong> in the fine-tuning process
+      influences how long the model is exposed to the training data. In the
+      context of a pre-trained model like BERT, fewer epochs are generally
+      required for fine-tuning compared to training from scratch. However, the
+      optimal number of epochs is a delicate balance; too few might result in
+      underfitting, while too many could lead to overfitting, especially when
+      dealing with smaller, task-specific datasets.</p></li>
+    </ol><p>In addition to the primary hyperparameters, there are other less
+  emphasized hyperparameters in the fine-tuning process of BERT models.</p><ol
+      start="4">
+      <li><p>The <strong>weight decay</strong> adds a regularization term to
+      the loss function by penalizing large weights, encouraging the model to
+      maintain simpler, more generalizable features rather than overfitting
+      the training data. The careful calibration of weight decay can aid in
+      striking a balance between model complexity and its generalization
+      ability, which is especially crucial when working with limited or highly
+      specific datasets, like our second project in the seminar.</p></li>
+
+      <li><p>The <strong>dropout rate</strong> is used in various layers of
+      the BERT model, including the attention mechanisms and the task-specific
+      head. Dropout randomly deactivates a subset of neurons during training,
+      which helps prevent co-adaptation of features and fosters a more robust
+      internal representation of the data. Adjusting the dropout rate can
+      significantly impact the model's resilience to overfitting, with higher
+      rates often leading to better generalization at the cost of slower
+      convergence.</p></li>
+
+      <li><p>The <strong>warmup steps</strong> parameter plays a nuanced role
+      in the fine-tuning process. During the initial training phase, the
+      learning rate incrementally increases from zero to the pre-set learning
+      rate over a number of warmup steps. This gradual increase helps
+      stabilize the training process, preventing the model from making
+      excessively large weight updates in the early stages, which can
+      destabilize a pre-trained model like BERT.</p></li>
+    </ol><p>The adjustment of these less discussed hyperparameters, should be
+  made in conjunction with primary parameters, demanding a nuanced
+  understanding of the model's dynamics and the specific requirements of our
+  NLP task. Therefore, it is important to emphasize the use of a tailored and
+  iterative approach in setting hyperparameters, aligning them with the
+  specific characteristics of the NLP task and the specific dataset at hand to
+  optimize the performance of the fine-tuned BERT model.</p><h3>Initial Values
+  and Tuning Strategies</h3><p>Detecting subtle topic shifts in text is a
   challenging task, and fine-tuning a BERT model to capture these nuances
   requires careful consideration of various factors, including
   hyperparameters. Here are some strategies and hyperparameter adjustments
-  that can help your BERT model become more sensitive to subtle topic shifts:
-  Learning Rate: A lower learning rate can sometimes help the model learn
-  finer details by making smaller updates to the weights. However, it's
-  important to balance this as too low a rate might lead to slow convergence
-  or getting stuck in local minima. Consider experimenting with learning rates
-  in the lower end of the typical range for BERT (e.g., 1e-5 to 3e-5). Batch
-  Size: A smaller batch size can lead to a more fine-grained update of
-  weights. It might help the model to pick up subtleties in the data, but it
-  can also increase training time and variance in training. Number of Epochs:
-  Increasing the number of training epochs allows the model more opportunity
-  to learn from the data. However, be cautious of overfitting. Implement early
-  stopping or monitor validation loss to prevent this. Regularization: Weight
-  decay and dropout are forms of regularization that can prevent overfitting.
-  However, if they are too high, they might prevent the model from learning
-  the finer details. Adjust these parameters to find a good balance. Class
-  Weights: If certain types of topic shifts are more subtle and thus harder to
-  classify, consider adjusting the class weights to give more emphasis to
-  these categories. Fine-tuning Strategy: Gradual unfreezing: Start by
-  fine-tuning only the top layers of the model, and gradually unfreeze more
-  layers. This can help in adapting the model more precisely to your task
-  without losing the pre-trained knowledge in the lower layers. Layer-wise
-  learning rate: Implement different learning rates for different layers.
-  Lower layers could have a smaller learning rate (as they contain more
-  general knowledge), while higher layers could have a higher rate (as they
-  need more task-specific tuning). Data Augmentation: Consider augmenting your
-  data to include more examples of subtle topic shifts. Techniques like
-  back-translation or paraphrasing can create variations of existing sentences
-  that maintain the subtle shifts. Sequence Length: Ensure that the sequence
-  length is appropriate. If the subtleties of the topic shifts are
-  context-dependent, longer sequence lengths might capture more necessary
-  context. However, be mindful of BERT's maximum sequence length limit. Model
-  Complexity: If computational resources allow, experimenting with larger
-  versions of BERT (like BERT-Large) might help, as they can potentially
-  capture more complex patterns in the data. Evaluation Metrics: Use metrics
-  that can capture the performance on subtle shifts effectively. Precision,
-  recall, and F1-score for each class can provide insights into how well the
-  model is capturing these nuances. It's important to note that there is no
-  one-size-fits-all set of hyperparameters. The optimal configuration can vary
-  depending on the specific characteristics of your data and the subtleties
-  you are trying to capture. Experimentation and validation are key to finding
-  the right balance. Additionally, continually reviewing examples where the
-  model fails to detect subtle shifts can provide insights into further
-  adjustments and improvements.
-  """</p--></section></main></section><footer><p>---</p><p><small>This
+  that can help your BERT model become more sensitive to subtle topic
+  shifts:</p><ul>
+      <li><p>For <strong>learning rate</strong>, start with a value of
+      <kbd>2e-5</kbd>. A lower value can sometimes help the model learn finer
+      details by making smaller updates to the weights; however, it's
+      important to balance this as too low a rate might lead to slow
+      convergence or getting stuck in local minima (a point in the loss value
+      where it is lower than in the immediate surrounding area, but it may not
+      be the lowest point overall). Experiment with learning rates in the
+      lower end of the typical range for BERT (e.g., <kbd>1e-5</kbd> to
+      <kbd>3e-5</kbd>).</p></li>
+
+      <li><p>For <strong>batch size</strong>, begin with <kbd>16</kbd> or
+      <kbd>32</kbd> and adjust based on the available computational resources.
+      A smaller value can lead to a more fine-grained update of weights. It
+      might help the model to pick up subtleties in the data, but it can also
+      increase training time and variance in training.</p></li>
+
+      <li><p>For the <strong>number of epochs</strong>, start with
+      <kbd>3</kbd> epochs. Increasing epochs might lead to better performance
+      but also raise the risk of overfitting. Increasing the number of
+      training epochs allows the model more opportunity to learn from the
+      data. However, be cautious of overfitting. Implement early stopping or
+      monitor validation loss to prevent this. In the final presentation, you
+      will discuss your early stop strategy.</p></li>
+
+      <li><p>For <strong>warmup steps</strong>, this value is calculated based
+      on the size of your training dataset and the batch size. Each step
+      corresponds to processing one batch of data, typically, <kbd>10%</kbd>
+      of the total number of training steps is a good starting
+      point.</p><p>First we calculate the total number of training
+      steps:</p><p><math style="color: green"
+          xmlns="http://www.w3.org/1998/Math/MathML">
+          <mrow>
+            <mi>Total Training Steps</mi>
+
+            <mo>=</mo>
+
+            <mfrac>
+              <mrow>
+                <mi>Batch Size</mi>
+              </mrow>
+
+              <mrow>
+                <mi>Size of Training Dataset</mi>
+              </mrow>
+            </mfrac>
+
+            <mo>×</mo>
+
+            <mi>Number of Epochs</mi>
+          </mrow>
+        </math></p><p>For example, suppose you have a training dataset of
+      <kbd>8000</kbd> examples, a batch size of 32, and you plan to train the
+      model for <kbd>3</kbd> epochs. The total number of training steps would
+      be calculated as follows:</p><math style="color: green"
+          xmlns="http://www.w3.org/1998/Math/MathML">
+          <mrow>
+            <mi>Total Training Steps</mi>
+
+            <mo>=</mo>
+
+            <mfrac>
+              <mn>32</mn>
+
+              <mn>8000</mn>
+            </mfrac>
+
+            <mo>×</mo>
+
+            <mn>3</mn>
+          </mrow>
+        </math><p>We use <kbd>10%</kbd> of the total training steps as warmup
+      steps:</p><math style="color: green"
+          xmlns="http://www.w3.org/1998/Math/MathML">
+          <mrow>
+            <mi>Warmup Steps</mi>
+
+            <mo>=</mo>
+
+            <mn>0.10</mn>
+
+            <mo>×</mo>
+
+            <mi>Total Training Steps</mi>
+          </mrow>
+        </math><p>Therefore, from our example, we use the total training steps
+      are <kbd>750</kbd>, derived from the calculation:</p> <math
+          style="color: green" xmlns="http://www.w3.org/1998/Math/MathML">
+          <mrow>
+            <mi>Warmup Steps</mi>
+
+            <mo>=</mo>
+
+            <mn>0.10</mn>
+
+            <mo>×</mo>
+
+            <mn>750</mn>
+          </mrow>
+        </math><p>Finally:</p><math style="color: green"
+          xmlns="http://www.w3.org/1998/Math/MathML">
+          <mrow>
+            <mi>Warmup Steps</mi>
+
+            <mo>=</mo>
+
+            <mn>75</mn>
+          </mrow>
+        </math></li>
+
+      <li><p><strong>Weight decay</strong> and <strong>dropout rate</strong>
+      are forms of regularization that can prevent overfitting. However, if
+      they are too high, they might prevent the model from learning the finer
+      details. Adjust these parameters to find a good balance. A common value
+      for weight decay is 0.01 while the dropout rate is typically in the
+      range of 0.1 to 0.3.</p></li>
+    </ul><p>To tune these hyperparameters, monitor performance on a validation
+  set using the <strong>training and validation losses</strong>
+  visualization.</p><p>Finally, notice that there is no one-size-fits-all set
+  of hyperparameters. The optimal configuration can vary depending on the
+  specific characteristics of the dataset and the subtleties we are trying to
+  capture. Experimentation and validation are key to finding the right
+  balance.</p><h3>Additional Considerations</h3><p>In our specific case,
+  certain types of topic shifts are more subtle and thus harder to classify,
+  resulting in the need to adjust the <strong>class weights</strong> to give
+  more emphasis to these categories –specially when dealing with classes that
+  are naturally less frequent but equally important; as most of real-world
+  cases. For this purpose, we use the <kbd>compute_class_weight</kbd> function
+  from Scikit-learn, which calculates the weights for each class to be used in
+  the training process, allowing the model to pay more attention to
+  underrepresented classes.</p><p>When you train your model, the modified loss
+  function (with class weights) is used in the training loop. This ensures
+  that during the backpropagation step, the model's parameters are updated
+  taking into account the class weights. It helps in balancing the learning
+  process, especially when the distribution of classes is skewed. By
+  incorporating class weights in this manner, your model is better equipped to
+  handle imbalances in the training data, which can lead to more robust and
+  fair performance across different classes.</p><pre><span
+        style="color: white">class_weights = compute_class_weight(class_weight="<span
+          style="color: #b1fa6d">balanced</span>", classes=np.unique(labels), y=labels)
+class_weights = torch.tensor(class_weights, dtype=torch.float).to(device)
+</span></pre><p>If computational resources allow, experimenting with larger
+  versions of BERT (like <a href="https://huggingface.co/bert-large-uncased"
+  target="_blank">BERT-Large</a>) might help, as they can potentially capture
+  more complex patterns in the data.</p><p>Replace these lines:</p><pre># Load BERT model
+<span style="color: white">model = BertForSequenceClassification.from_pretrained("<span
+          style="color: #b1fa6d">bert-base-uncased</span>",
+                                                      num_labels=len(LABEL_MAP),
+                                                      hidden_dropout_prob=DROP_OUT_RATE)</span>
+
+(...)
+
+# Move model to device
+<span style="color: white">tokenizer = BertTokenizer.from_pretrained("<span
+          style="color: #b1fa6d">bert-base-uncased</span>")</span>
+</pre><p>With:</p><pre># Load BERT model
+<span style="color: white">model = BertForSequenceClassification.from_pretrained("<span
+          style="color: #b1fa6d">bert-large-uncased</span>",
+                                                      num_labels=len(LABEL_MAP),
+                                                      hidden_dropout_prob=DROP_OUT_RATE)</span>
+
+(...)
+
+# Move model to device
+<span style="color: white">tokenizer = BertTokenizer.from_pretrained("<span
+          style="color: #b1fa6d">bert-large-uncased</span>")</span>
+</pre><h3>Recommended Literature</h3><ol>
+      <li><p>Devlin, J., Chang, M.-W., Lee, K., &amp; Toutanova, K. (2018).
+      BERT: Pre-training of deep bidirectional transformers for language
+      understanding. <i>arXiv preprint arXiv:1810.04805</i>. Retrieved from <a
+      href="https://arxiv.org/abs/1810.04805"
+      target="_blank">https://arxiv.org/abs/1810.04805</a></p></li>
+
+      <li><p>Rogers, A., Kovaleva, O., &amp; Rumshisky, A. (2020). A primer in
+      BERTology: What we know about how BERT works. <i>arXiv preprint
+      arXiv:2002.12327</i>. Retrieved from <a
+      href="https://arxiv.org/abs/2002.12327"
+      target="_blank">https://arxiv.org/abs/2002.12327</a></p></li>
+
+      <li><p>Sun, C., Qiu, X., Xu, Y., &amp; Huang, X. (2019). How to
+      fine-tune BERT for text classification? <i>arXiv preprint
+      arXiv:1905.05583</i>. Retrieved from <a
+      href="https://arxiv.org/abs/1905.05583"
+      target="_blank">https://arxiv.org/abs/1905.05583</a></p></li>
+    </ol> </section></main></section><footer><p>---</p><p><small>This
   documentation was developed by Juan-Francisco Reyes for the seminar on
   Information Extraction from Web Resources at the Brandenburgische Technische
   Universität Cottbus-Senftenberg in the Winter semester of

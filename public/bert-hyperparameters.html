@@ -7,7 +7,7 @@
 
     <link href="styles.css" rel="stylesheet" />
 
-    <title>IE Seminar - Fine-tuning a BERT model</title>
+    <title>IE Seminar - Fine-tuning BERT models</title>
   </head>
 
   <body><header> <a href="index.html"> « IE Seminar</a> </header><section><div
@@ -138,12 +138,14 @@
   iterative approach in setting hyperparameters, aligning them with the
   specific characteristics of the NLP task and the specific dataset at hand to
   optimize the performance of the fine-tuned BERT model.</p><h3>Initial Values
-  and Tuning Strategies</h3><p>Detecting subtle topic shifts in text is a
-  challenging task, and fine-tuning a BERT model to capture these nuances
-  requires careful consideration of various factors, including
-  hyperparameters. Here are some strategies and hyperparameter adjustments
-  that can help your BERT model become more sensitive to subtle topic
-  shifts:</p><ul>
+  and Tuning Strategies</h3><p>Detecting subtle linguistic patterns, such as
+  classifying political discourses into monologic and dialogic, detecting
+  topic shifts in transcribed political discourse, or stance classification in
+  political discourse are challenging tasks, and fine-tuning a BERT model to
+  capture these nuances requires careful consideration of various factors,
+  including hyperparameters. Here are some strategies and hyperparameter
+  adjustments that can help your BERT model become more sensitive to subtle
+  linguistic patterns:</p><ul>
       <li><p>For <strong>learning rate</strong>, start with a value of
       <kbd>2e-5</kbd>. A lower value can sometimes help the model learn finer
       details by making smaller updates to the weights; however, it's
@@ -265,22 +267,22 @@
   of hyperparameters. The optimal configuration can vary depending on the
   specific characteristics of the dataset and the subtleties we are trying to
   capture. Experimentation and validation are key to finding the right
-  balance.</p><h3>Additional Considerations</h3><p>In our specific case,
-  certain types of topic shifts are more subtle and thus harder to classify,
-  resulting in the need to adjust the <strong>class weights</strong> to give
-  more emphasis to these categories –specially when dealing with classes that
-  are naturally less frequent but equally important; as most of real-world
-  cases. For this purpose, we use the <kbd>compute_class_weight</kbd> function
-  from Scikit-learn, which calculates the weights for each class to be used in
-  the training process, allowing the model to pay more attention to
-  underrepresented classes.</p><p>When you train your model, the modified loss
-  function (with class weights) is used in the training loop. This ensures
-  that during the backpropagation step, the model's parameters are updated
-  taking into account the class weights. It helps in balancing the learning
-  process, especially when the distribution of classes is skewed. By
-  incorporating class weights in this manner, your model is better equipped to
-  handle imbalances in the training data, which can lead to more robust and
-  fair performance across different classes.</p><pre><span
+  balance.</p><h3>Additional Considerations</h3><p>In our specific use cases,
+  certain types of linguistic structures and patterns are more subtle and thus
+  harder to classify, resulting in the need to adjust the <strong>class
+  weights</strong> to give more emphasis to these categories –specially when
+  dealing with classes that are naturally less frequent but equally important;
+  as most of real-world cases. For this purpose, we use the
+  <kbd>compute_class_weight</kbd> function from Scikit-learn, which calculates
+  the weights for each class to be used in the training process, allowing the
+  model to pay more attention to underrepresented classes.</p><p>When you
+  train your model, the modified loss function (with class weights) is used in
+  the training loop. This ensures that during the backpropagation step, the
+  model's parameters are updated taking into account the class weights. It
+  helps in balancing the learning process, especially when the distribution of
+  classes is skewed. By incorporating class weights in this manner, your model
+  is better equipped to handle imbalances in the training data, which can lead
+  to more robust and fair performance across different classes.</p><pre><span
         style="color: white">class_weights = compute_class_weight(class_weight="<span
           style="color: #b1fa6d">balanced</span>", classes=np.unique(labels), y=labels)
 class_weights = torch.tensor(class_weights, dtype=torch.float).to(device)
@@ -309,12 +311,78 @@ class_weights = torch.tensor(class_weights, dtype=torch.float).to(device)
 # Move model to device
 <span style="color: white">tokenizer = BertTokenizer.from_pretrained("<span
           style="color: #b1fa6d">bert-large-uncased</span>")</span>
-</pre><h3>Recommended Literature</h3><ol>
+</pre><h3>Automated Experimentation Approaches</h3><p>Grid search is a
+  technique used to systematically work through multiple combinations of
+  parameter tunes, cross-validating to determine which tune performs best. In
+  the context of fine-tuning BERT models, a grid search involves defining a
+  grid of hyperparameters, such as learning rate, batch size, number of
+  epochs, and potentially others like dropout rates or weight decay. The grid
+  search algorithm then evaluates the model performance for each combination
+  of these hyperparameters.</p><p>The primary advantage of grid search is its
+  thoroughness. Exploring all possible combinations within the predefined grid
+  ensures that the best-performing hyperparameters are not overlooked.
+  However, this thoroughness comes at the cost of computational resources and
+  time, especially when the grid is large, or the model is complex, as is the
+  case with BERT.</p><p>Here a basic implementation of grid search in
+  Python:</p><pre style="color: white">import <span style="color: #b1fa6d">itertools</span>
+
+<span style="color: orange">HYPERPARAMETERS_GRID</span> = {
+  "learning_rate": <span style="color: cyan">[1.5e-5, 2e-5, 2.5e-5, 3e-5, 3.5e-5]</span>,
+  "batch_size": <span style="color: cyan">[16, 32]</span>,
+  "num_epochs": <span style="color: cyan">[2, 3, 4]</span>,
+  "warmup_steps": <span style="color: cyan">[0, 100, 1000]</span>,
+  "weight_decay": <span style="color: cyan">[0, 1e-2, 1e-3]</span>,
+  "drop_out_rate": <span style="color: cyan">[0.1, 0.2]</span>
+}
+
+<span style="color: gray"># Generate all combinations of hyperparameters</span>
+<span style="color: yellow">hyperparameters_combinations</span> = list(<span
+        style="color: #b1fa6d">itertools</span>.product(*<span
+        style="color: orange">HYPERPARAMETERS_GRID</span>.values()))
+
+<span style="color: gray"># Run experiment for each combination of hyperparameters</span>
+for hyperparameters in <span style="color: yellow">hyperparameters_combinations</span>:
+  # Create a dictionary of the current hyperparameters
+  <span style="color: cyan">hyperparameters_dict</span> = dict(zip(<span
+        style="color: orange">HYPERPARAMETERS_GRID</span>.keys(), hyperparameters))
+
+  <span style="color: gray"># Update the global variables with the current hyperparameters</span>
+  LEARNING_RATE = <span style="color: cyan">hyperparameters_dict</span>["learning_rate"]
+  BATCH_SIZE = <span style="color: cyan">hyperparameters_dict</span>["batch_size"]
+  NUM_EPOCHS = <span style="color: cyan">hyperparameters_dict</span>["num_epochs"]
+  WARMUP_STEPS = <span style="color: cyan">hyperparameters_dict</span>["warmup_steps"]  
+  WEIGHT_DECAY = <span style="color: cyan">hyperparameters_dict</span>["weight_decay"]
+  DROP_OUT_RATE = <span style="color: cyan">hyperparameters_dict</span>["drop_out_rate"]
+  
+  <span style="color: gray">(...)</span></pre><p>As an alternative to grid
+  search, random search randomly selects combinations of hyperparameters to
+  evaluate. This approach can be more efficient than grid search, especially
+  when some hyperparameters are more influential than others. Random search
+  allows for a broader search of the hyperparameter space and can often find
+  good combinations faster than grid search.</p><p>On the other hand, bayesian
+  optimization is a more sophisticated approach that models the performance
+  function of hyperparameters and uses this model to select the most promising
+  hyperparameters to evaluate in the actual model. This approach is useful
+  when dealing with high-dimensional hyperparameter spaces, as it can more
+  efficiently navigate the search space based on the performance of previous
+  evaluations.</p><h3>Recommended Literature</h3><ol>
+      <li><p>Albanese, N. C. (2022, May 14). Fine-Tuning BERT for Text
+      Classification: A step-by-step tutorial in Python. <i>Towards Data
+      Science</i>. Retrieved from <a
+      href="https://towardsdatascience.com/fine-tuning-bert-for-text-classification-54e7df642894#ec34"
+      target="_blank">https://towardsdatascience.com/fine-tuning-bert-for-text-classification-54e7df642894#ec34</a></p></li>
+
       <li><p>Devlin, J., Chang, M.-W., Lee, K., &amp; Toutanova, K. (2018).
       BERT: Pre-training of deep bidirectional transformers for language
       understanding. <i>arXiv preprint arXiv:1810.04805</i>. Retrieved from <a
       href="https://arxiv.org/abs/1810.04805"
       target="_blank">https://arxiv.org/abs/1810.04805</a></p></li>
+
+      <li><p>Kamsetty, A., Fricke, K., &amp; Liaw, R. (2020, August 26).
+      Hyperparameter Optimization for 🤗Transformers: A guide. <i>Distributed
+      Computing with Ray</i>. Retrieved from <a
+      href="https://medium.com/distributed-computing-with-ray/hyperparameter-optimization-for-transformers-a-guide-c4e32c6c989b"
+      target="_blank">https://medium.com/distributed-computing-with-ray/hyperparameter-optimization-for-transformers-a-guide-c4e32c6c989b</a></p></li>
 
       <li><p>Rogers, A., Kovaleva, O., &amp; Rumshisky, A. (2020). A primer in
       BERTology: What we know about how BERT works. <i>arXiv preprint
@@ -327,7 +395,7 @@ class_weights = torch.tensor(class_weights, dtype=torch.float).to(device)
       arXiv:1905.05583</i>. Retrieved from <a
       href="https://arxiv.org/abs/1905.05583"
       target="_blank">https://arxiv.org/abs/1905.05583</a></p></li>
-    </ol> </section></main></section><footer><p>---</p><p><small>This
+    </ol></section></main></section><footer><p>---</p><p><small>This
   documentation was developed by Juan-Francisco Reyes for the seminar on
   Information Extraction from Web Resources at the Brandenburgische Technische
   Universität Cottbus-Senftenberg in the Winter semester of

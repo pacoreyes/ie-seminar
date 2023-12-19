@@ -194,15 +194,17 @@
     </ol><p>Coreference happens on the pragmatics level of language, going
   beyond the literal meaning of words (semantics), morphology and syntax,
   requiring an understanding of context, speaker intention, and the ability to
-  make inferences.</p><h3>Bootstrapping Approach</h3><p>In NLP, bootstrapping
-  is a semi-supervised learning method that iteratively improves a model's
-  performance by using its predictions to generate new training data. This
-  approach is often used when there is a limited amount of labeled data but an
-  abundance of unlabeled data. In this project, we will follow the
+  make inferences.</p><h3>Bootstrapping Approach using Rules</h3><p>In NLP,
+  bootstrapping is a semi-supervised learning method that iteratively improves
+  a model's performance by using its predictions to generate new training
+  data. This approach is often used when there is a limited amount of labeled
+  data but an abundance of unlabeled data. In this project, we will follow the
   bootstrapping approach by automatically creating the first version of the
-  dataset by using rules based on linguistic features. This initial version
-  will define the baseline of our BERT model for NSP.</p><p>The six rules are
-  built on the following linguistic features:</p><ol>
+  dataset by using rules based on linguistic features.</p><h4>Rule-Based
+  Classification Model 1</h4><p>This rule-based classification model will
+  generate the initial version of the dataset to define the baseline of our
+  BERT model for NSP.</p><p>The six rules are built on the following
+  linguistic features:</p><ol>
       <li><p><strong>Coreference Resolution</strong>: Using spaCy's
       experimental model for coreference resolution
       (<kbd>en_coreference_web_trf</kbd>) we identify if two sentences have
@@ -270,9 +272,11 @@
   specific domain (American political discourse).</p><p>Each passage will
   allow us to generate multiple pairs of sentences to fine-tune the NSP
   feature of a BERT model comprised of the combination of</p><ul>
-      <li><p>two sentences defining a topic shift, and</p></li>
+      <li><p>two sentences defining a topic shift ("continue" class),
+      and</p></li>
 
-      <li><p>two sentences defining the continuation of a topic.</p></li>
+      <li><p>two sentences defining the continuation of a topic
+      ("not_continue" class).</p></li>
     </ul><p>Consequently, a good theoretical understanding of the the
   linguistics of sentence continuity is crucial.</p><h3>Protocol</h3><p>The
   annotation process involves using the annotation tool and a shared <a
@@ -825,9 +829,151 @@ high-energy biscuits, and 1 metric ton of sugar to Turkmenistan for distribution
       <li><p><strong>Do you need to know what datapoints have been tagged by
       you?</strong> Just download your dataset by clicking the "Download
       Dataset 2".</p></li>
-    </ol></section><footer><p>---</p><p><small>This documentation was
-  developed by Juan-Francisco Reyes for the seminar on Information Extraction
-  from Web Resources at the Brandenburgische Technische Universität
-  Cottbus-Senftenberg in the Winter semester of 2023/24.</small></p> <small>©
-  2024 Juan-Francisco Reyes</small> </footer></body>
+    </ol><h3>Hybrid Reclassification Approach (Round 3)</h3><p>This annotation
+  approach combines refined rules and manual annotation to reclassify pairs of
+  sentences.</p><h4>Rule-Based Classification Model 2</h4><p>This rule-based
+  classification model will generate an improved version of the dataset using
+  refined rules. This version aims to capture more fine-grained linguistic
+  features that define topic continuity and shift.</p><p>The five rules are
+  built on the following linguistic features:</p><ol>
+      <li><p><strong>Coreference Continuity</strong>: As in the rule-based
+      classification model 1, using spaCy's experimental model for coreference
+      resolution (<kbd>en_coreference_web_trf</kbd>), we identify if two
+      sentences have coreference links, meaning if there are words (like
+      pronouns) in one sentence that refer to words in another sentence. It is
+      crucial for understanding the continuity and flow of ideas between
+      sentences.</p></li>
+
+      <li><strong>Lexical Continuity</strong>: Using spaCy's linguistic
+      features, we evaluate if two sentences share common linguistic elements,
+      specifically nouns, proper nouns, verbs, adjectives, adverbs,
+      subordinating conjunctions, and numbers. In essence, it seeks to capture
+      the presence of words central to sentence meaning and structure. The
+      check function <kbd>check_lexical_continuity</kbd> returns common
+      elements between both sentences that are indicators of lexical
+      continuity. Lexical continuity is vital to being cohesive and coherent,
+      ensuring that ideas are expressed and interconnected, offering a
+      smoother and more logical transition between thoughts.<p>Example:</p><ul>
+          <li><p>"<kbd>The President announced a new climate
+          <strong>policy</strong> focusing on renewable energy
+          sources.</kbd>"</p></li>
+
+          <li><p>"<kbd>This <strong>policy</strong> could dramatically shift
+          the country's reliance on fossil fuels.</kbd>"</p></li>
+        </ul><p>In these sentences, the shared syntactic unit is
+      "<kbd>policy</kbd>." The first sentence introduces a specific action by
+      <kbd>the President</kbd> – announcing a new climate policy. The second
+      sentence refers back to this policy, discussing its potential impact.
+      This shared noun ("<kbd>policy</kbd>") establishes lexical continuity
+      between the two sentences, indicating a clear, contextual link in the
+      discourse about environmental policy.</p><p>The function would identify
+      "<kbd>policy</kbd>" as the common element, confirming a lexical bridge
+      between the two sentences, demonstrating that both sentences are
+      related, and ensuring the conversation remains focused on a specific
+      topic.</p></li>
+
+      <li><p><strong>Syntactic Continuity</strong>: Using spaCy's linguistic
+      features, we evaluate if two sentences identify commonality in the way
+      words are related to each other within different sentences, through
+      their dependency patterns, extending beyond the simple presence of
+      shared words or phrases, but delving into the deeper structure of
+      sentences. The check function <kbd>check_syntactic_continuity</kbd>
+      finds at least one dependency pattern between two sentences to conclude
+      they exhibit syntactic continuity. A dependency pattern is a triad
+      representing the relationship between words in a sentence, consisting of
+      a <kbd>head word</kbd>, a <kbd>dependent word</kbd>, and the <kbd>type
+      of dependency</kbd> that connects them.</p><p>Example:</p><ul>
+          <li><p>"<kbd>The <strong>President</strong> <strong>signed</strong>
+          the bill.</kbd>"</p></li>
+
+          <li><p>"<kbd>The <strong>leader</strong> <strong>approved</strong>
+          the proposal</kbd><kbd>.</kbd>"</p></li>
+        </ul><p>In the first sentence, “<kbd>President</kbd>” is the head of
+      “<kbd>signed</kbd>” with a dependency type indicating an action
+      performed by a subject. The second sentence has a similar pattern with
+      “<kbd>leader</kbd>” as the head of “<kbd>approved</kbd>,” identifying a
+      common dependency pattern, thus confirming syntactic
+      continuity.</p><p>While lexical continuity is concerned with what words
+      are used, syntactic continuity is about how these words are structurally
+      interrelated within the sentence, being able to detect syntactic
+      patterns that may predict continuity.</p></li>
+
+      <li><p><strong>Semantic Continuity</strong>: Using spaCy's linguistic
+      features, we evaluate if two sentences encompass deeper meanings by
+      sharing significant named entities or demonstrating a high degree of
+      semantic similarity between their key semantic units, such as nouns,
+      verbs, adjectives, and adverbs. The function
+      <kbd>check_semantic_continuity</kbd> first extracts the key semantic
+      units from each sentence, which are units that carry the core meaning,
+      and then employs a semantic similarity analysis, comparing these units
+      across the sentences using vector representations of words to calculate
+      the semantic proximity of each pair of units.</p><p>Example:</p><ul>
+          <li><p>"<kbd>The <strong>administration</strong> is focusing on
+          <strong>healthcare reform</strong> to improve access to medical
+          services for all citizens.</kbd>"</p></li>
+
+          <li><p>"<kbd>Efforts to <strong>expand medical coverage</strong>
+          have been a central pillar of the <strong>government's</strong>
+          agenda.</kbd>"</p></li>
+        </ul><p>Between both sentences, key terms like "<kbd>healthcare
+      reform</kbd>" and "<kbd>expanding medical coverage</kbd>" or
+      "<kbd>administration</kbd>" and "<kbd>government</kbd>" would find a
+      high degree of semantic similarity. Though not immediately obvious
+      through word choice or grammar, these semantic connections indicate a
+      strong thematic link between the sentences.</p></li>
+
+      <li><p><strong>Transition Marker Continuity</strong>: Transition markers
+      are words or phrases that guide the reader through the flow of ideas,
+      signaling whether the sentence continues a topic or shifts to a new one.
+      The function <kbd>check_transition_markers_continuity</kbd> uses a
+      lexicon of transition markers to categorize transition markers into
+      different types based on their function and position in the sentence.
+      The categories include "<kbd>leading_markers</kbd>" and
+      "<kbd>flexible_markers</kbd>," each subdivided into
+      "<kbd>topic_continuity</kbd>" and "<kbd>topic_shift</kbd>"
+      markers.</p><p>Leading markers are typically found at the beginning of a
+      sentence and are definitive signals of the sentence’s intent, whether
+      continuing a topic or introducing a new one. For instance, markers like
+      "<kbd>furthermore</kbd>" or "<kbd>however</kbd>" clearly indicate the
+      continuation or shift of the topic, respectively. Flexible markers, on
+      the other hand, can appear anywhere in a sentence and often serve dual
+      roles. They can signal continuity or shift depending on their usage and
+      the sentence context. Markers like "<kbd>as well</kbd>" or
+      "<kbd>including</kbd>" can either support the ongoing topic or subtly
+      introduce a shift in the discourse.</p><p>This analysis of transition
+      markers is vital for understanding the text's structural and rhetorical
+      strategies. It helps dissect complex arguments, follow narrative flows,
+      and appreciate written communication's subtleties.</p><p>Example:</p><ul>
+          <li><p>"<kbd>The government has increased funding for public
+          education.</kbd>"</p></li>
+
+          <li><p>"<kbd><strong>However</strong>, many schools are still facing
+          resource shortages.</kbd>"</p></li>
+
+          <li><p>"<kbd><strong>Despite</strong> these challenges, some
+          educational institutions have made significant
+          improvements.</kbd>"</p></li>
+        </ul><p>In these sentences, the transition markers
+      "<kbd>However</kbd>" and "<kbd>Despite</kbd>" are key in signaling the
+      direction of the discourse. The second sentence begins with "However," a
+      leading marker from the "<kbd>topic_shift</kbd>" category, indicating
+      that the following sentence will present a contrasting or opposing point
+      to the one just made. This sets up the expectation for a shift in the
+      discussion, moving from a statement about increased funding to a caveat
+      about persistent issues in schools. The third sentence begins with
+      "<kbd>Despite</kbd>," another leading marker, but this time indicating a
+      continuation of the contrasting idea introduced by "<kbd>However</kbd>."
+      It acknowledges the challenges mentioned in the first sentence but
+      shifts the focus to a more positive aspect, highlighting improvements in
+      some educational institutions.</p></li>
+    </ol><p>We dropped <kbd>parallelism</kbd>, logical continuity (BERT's
+  NSP), and Tense and Aspect Change from the rule-based classification Model 1
+  because either they overlapped the capture of features or their contribution
+  was marginal.</p><h4>Manual annotation
+  (reclassification)</h4><p>(Soon.)</p><p></p><p></p></section><footer><p>---</p><p><small>This
+  documentation was developed by Juan-Francisco Reyes for the seminar on
+  Information Extraction from Web Resources at the Brandenburgische Technische
+  Universität Cottbus-Senftenberg in the Winter semester of
+  2023/24.</small></p> <small>© 2024 Juan-Francisco Reyes</small>
+  </footer></body>
 </html>

@@ -181,13 +181,13 @@
           href="datasets/dataset2_raw_dec_13b.jsonl">dataset2_raw_dec_13b.jsonl</a></kbd>
           (Dec 13 at 22:00).</p></li>
 
-          <li><p><kbd><a download="dataset2_raw_dec_14a.jsonl"
-          href="datasets/dataset2_raw_dec_14a.jsonl">dataset2_raw_dec_14a.jsonl</a></kbd>
-          before grading (Dec 15) .</p></li>
+          <li><p><kbd><a download="dataset2_raw_dec_16.jsonl"
+          href="datasets/dataset2_raw_dec_16.jsonl">dataset2_raw_dec_16.jsonl</a></kbd>
+          before grading (Dec 16).</p></li>
 
-          <li><p><kbd><a
+          <li><p><kbd><a download="dataset2_pair_sentences_final.jsonl"
           href="dataset2_pair_sentences_final.jsonl">dataset2_pair_sentences_final.jsonl</a></kbd>
-          after grading and corrections by the lecturer (Dec 15). This version
+          after grading and corrections by the lecturer (Dec 19). This version
           does not need to be preprocessed using the script
           <kbd><kbd>build_dataset2_baseline.py</kbd></kbd>.</p></li>
         </ul></li>
@@ -229,9 +229,9 @@
       here: <a href="bert-hyperparameters.html">BERT Hyperparamters: A Guide
       to Fine Tune BERT models</a>.</p></li>
 
-      <li><p>There is an option ## to ignore segments of the dataset according
-      to the annotator. For instance, you can exclude Mr Reyes's annotations
-      in this part of the code in this way:</p><pre><span style="color: white">if passage["metadata"]["annotator"] in ["IE-Reyes"]:
+      <li><p>There is an option to ignore segments of the dataset according to
+      the annotator. For instance, you can exclude Mr Reyes's annotations in
+      this part of the code in this way:</p><pre><span style="color: white">if passage["metadata"]["annotator"] in ["IE-Reyes"]:
   continue</span></pre><p>You can add someone else in the list to extend the
       ignore block:</p><pre><span style="color: white">if passage["metadata"]["annotator"] in ["IE-Reyes", "IE-Doe"]:
   continue</span></pre><p>In this way, you remove segments of the dataset
@@ -314,7 +314,7 @@
 
           <td>Metrics (*)</td>
 
-          <td>Accuracy above 0.750</td>
+          <td>Accuracy above 0.860</td>
 
           <td>2</td>
         </tr>
@@ -331,7 +331,8 @@
           <td>Training/Validation Loss (*)</td>
 
           <td>The model is neither overfitted not underfitted, according to
-          visualizations (see readings above).</td>
+          visualizations (see readings above). A small amount of overfitting
+          is acceptable.</td>
 
           <td>1.25</td>
         </tr>

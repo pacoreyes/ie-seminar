@@ -314,7 +314,7 @@
 
           <td>Metrics (*)</td>
 
-          <td>Accuracy above 0.860</td>
+          <td>Accuracy above 0.860 in the last iteration.</td>
 
           <td>2</td>
         </tr>
@@ -322,7 +322,8 @@
         <tr>
           <td>Confusion matrix (*)</td>
 
-          <td><p>Moderated imbalance ratio (&lt;=2:10)</p></td>
+          <td><p>Balance between classes and a moderated imbalance ratio
+          (&lt;=2:10) in the final iteration.</p></td>
 
           <td>1.25</td>
         </tr>
@@ -369,7 +370,7 @@
       </tbody>
     </table></section><section><p>(*) Each grading item in Model performance
   must be accomplished in conjunction with the others to get its maximal
-  grade. For instance, if accuracy is higher than 0.750 but there is a high
+  grade. For instance, if accuracy is higher than 0.860 but there is a high
   imbalance in the confusion matrix and the training/validation losses
   visualization shows overfitting, only 0.75 points will be given to the three
   items, according to this table:</p><table border="1">
